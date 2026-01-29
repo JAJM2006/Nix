@@ -5,21 +5,20 @@
   home.homeDirectory = "/home/juso";
   home.stateVersion = "25.11";
 
-  programs.git.enable = true;
-  programs.git.userName = "Georide Mac";
-  programs.git.userEmail = "Git@JAJM2006.uk";
-
-  programs.zsh.enable = true;
-
+  # User packages
   home.packages = with pkgs; [
-    neovim
+    tree
+    cmus
     htop
-    ripgrep
-    fd
-    bat
+    neofetch
+    # etc...
   ];
 
-  # Example app config symlink
-  # home.file.".config/niri".source = ../config/niri;
-}
+  programs.btop.enable = true;
+  programs.fzf.enable = true;
+  # These often come with additional config options
 
+  programs.git.enable = true;
+  programs.git.userName = "Geordie Mac";
+  programs.git.userEmail = "Git@JAJM2006.uk";
+}
