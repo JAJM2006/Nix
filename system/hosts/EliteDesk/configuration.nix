@@ -74,6 +74,22 @@
 
 	# GLOBAL AND USER CONFIGURATION
 
+  # Greetd
+  services.greetd = {
+  enable = true;
+  settings = {
+    default_session = {
+      command = "${pkgs.niri}/bin/niri-session";
+    };
+  };
+};
+
+  # Wayland
+  environment.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = "1";
+    QT_QPA_PLATFORM = "wayland";
+  };
+
   # zsh
   programs.zsh.enable = true;
 

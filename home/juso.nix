@@ -28,6 +28,8 @@
     brightnessctl
     playerctl
     nerd-fonts.fira-code
+    niri
+    greetd
   ];
 
   home.file.".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Settings/config/niri";
@@ -44,6 +46,8 @@
       export PATH=$HOME/Settings/scripts:$PATH
       export EDITOR=nvim
       export VISUAL=nvim
+      export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+      export WAYLAND_DISPLAY=wayland-1
     '';
   };
   
