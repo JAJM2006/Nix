@@ -1,0 +1,14 @@
+[urgency_low]
+timeout = 3
+background = "#222222"
+foreground = "#AAAAAA"
+
+[urgency_normal]
+timeout = 5
+background = "#333333"
+foreground = "#FFFFFF"
+
+[urgency_critical]
+timeout = 0
+background = "#FF0000"
+foreground = "#FFFFFF"

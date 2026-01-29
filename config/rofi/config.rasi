@@ -1,0 +1,5 @@
+* {
+    font: "FiraCode Nerd Font 10";
+    background: #222222;
+    foreground: #FFFFFF;
+}

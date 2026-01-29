@@ -1,0 +1,16 @@
+input {
+    keyboard {
+        xkb_layout "gb"
+    }
+}
+
+layout {
+    gaps 8
+    border-width 2
+}
+
+binds {
+    Mod+Return spawn "alacritty"
+    Mod+D spawn "rofi -show drun"
+    Mod+Q close-window
+}

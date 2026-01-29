@@ -1,0 +1,4 @@
+{
+  "modules-left": ["workspaces", "clock"],
+  "modules-right": ["network", "pulseaudio", "battery"]
+}
