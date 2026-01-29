@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+cd ~/Settings
+sudo nixos-rebuild switch --flake .#EliteDesk
