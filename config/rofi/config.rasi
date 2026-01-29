@@ -1,5 +1,130 @@
-* {
-    font: "FiraCode Nerd Font 10";
-    background: #222222;
-    foreground: #FFFFFF;
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    display-drun: " ";
+    display-run: " ";
+    display-window: " ";
+    drun-display-format: "{name}";
+    font: "FiraCode Nerd Font 11";
 }
+
+* {
+    bg: #1a1b26;
+    bg-alt: #24283b;
+    fg: #c0caf5;
+    fg-alt: #a9b1d6;
+    
+    blue: #7aa2f7;
+    cyan: #7dcfff;
+    green: #9ece6a;
+    red: #f7768e;
+    yellow: #e0af68;
+    magenta: #bb9af7;
+    
+    background-color: transparent;
+    text-color: @fg;
+    
+    margin: 0;
+    padding: 0;
+    spacing: 0;
+}
+
+window {
+    location: center;
+    width: 600;
+    background-color: @bg;
+    border: 2px;
+    border-color: @blue;
+    border-radius: 12px;
+}
+
+mainbox {
+    padding: 12px;
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-color: @blue;
+    border: 2px;
+    border-radius: 8px;
+    padding: 8px 16px;
+    spacing: 8px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @blue;
+    font: "FiraCode Nerd Font Bold 12";
+}
+
+entry {
+    placeholder: "Search...";
+    placeholder-color: @fg-alt;
+}
+
+message {
+    margin: 12px 0 0;
+    border-radius: 8px;
+    border-color: @bg-alt;
+    background-color: @bg-alt;
+}
+
+textbox {
+    padding: 8px 12px;
+}
+
+listview {
+    background-color: transparent;
+    margin: 12px 0 0;
+    lines: 8;
+    columns: 1;
+    fixed-height: false;
+    scrollbar: true;
+}
+
+scrollbar {
+    width: 4px;
+    border: 0;
+    handle-color: @blue;
+    handle-width: 8px;
+    padding: 0 4px;
+}
+
+element {
+    padding: 8px 12px;
+    spacing: 8px;
+    border-radius: 8px;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color: @fg;
+}
+
+element normal.active {
+    background-color: @bg-alt;
+    text-color: @blue;
+}
+
+element selected.normal {
+    background-color: @blue;
+    text-color: @bg;
+}
+
+element selected.active {
+    background-color: @blue;
+    text-color: @bg;
+}
+
+element-icon {
+    size: 1em;
+    vertical-align: 0.5;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+@theme "/nix/store/f5wmwybzmkbzhpj9k21nvm2k66cisrd7-rofi-2.0.0/share/rofi/themes/DarkBlue.rasi"

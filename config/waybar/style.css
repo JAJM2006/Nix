@@ -1,0 +1,136 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "FiraCode Nerd Font", "Font Awesome 6 Free";
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: #1a1b26;
+    color: #c0caf5;
+}
+
+/* Launcher button */
+#custom-launcher {
+    background: #7aa2f7;
+    color: #1a1b26;
+    padding: 0 15px;
+    margin: 4px 4px 4px 8px;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+#custom-launcher:hover {
+    background: #7dcfff;
+}
+
+/* Left modules */
+#cpu,
+#memory,
+#disk {
+    background: #24283b;
+    color: #c0caf5;
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 8px;
+}
+
+#cpu {
+    color: #7dcfff;
+}
+
+#memory {
+    color: #bb9af7;
+}
+
+#disk {
+    color: #9ece6a;
+}
+
+/* Clock */
+#clock {
+    background: #7aa2f7;
+    color: #1a1b26;
+    padding: 0 20px;
+    margin: 4px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* Right modules */
+#tray,
+#pulseaudio,
+#network,
+#battery {
+    background: #24283b;
+    color: #c0caf5;
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 8px;
+}
+
+#pulseaudio {
+    color: #7dcfff;
+}
+
+#pulseaudio.muted {
+    color: #f7768e;
+}
+
+#network {
+    color: #9ece6a;
+}
+
+#network.disconnected {
+    color: #f7768e;
+}
+
+#battery {
+    color: #e0af68;
+}
+
+#battery.charging {
+    color: #9ece6a;
+}
+
+#battery.warning:not(.charging) {
+    color: #e0af68;
+}
+
+#battery.critical:not(.charging) {
+    color: #f7768e;
+    animation: blink 1s linear infinite;
+}
+
+/* Power button */
+#custom-power {
+    background: #f7768e;
+    color: #1a1b26;
+    padding: 0 15px;
+    margin: 4px 8px 4px 4px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#custom-power:hover {
+    background: #ff9e9e;
+}
+
+/* Tooltip styling */
+tooltip {
+    background: #1a1b26;
+    border: 2px solid #7aa2f7;
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: #c0caf5;
+}
+
+/* Animations */
+@keyframes blink {
+    to {
+        opacity: 0.5;
+    }
+}

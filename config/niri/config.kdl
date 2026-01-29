@@ -1,16 +1,138 @@
+// Niri Config - Adapted from Kaku
+
 input {
     keyboard {
-        xkb_layout "gb"
+        xkb {
+            layout "gb"
+        }
     }
+    
+    touchpad {
+        tap
+        natural-scroll
+        dwt
+        dwtp
+    }
+    
+    focus-follows-mouse max-scroll-amount="90%"
+    warp-mouse-to-focus
+    workspace-auto-back-and-forth
+}
+
+output "eDP-1" {
+    scale 1.0
+    position x=0 y=0
+}
+
+cursor {
+    xcursor-size 24
+    xcursor-theme "Bibata-Modern-Ice"
 }
 
 layout {
-    gaps 8
-    border-width 2
+    gaps 6
+    
+    border {
+        width 2
+        active-color "#7aa2f7"
+        inactive-color "#3b4261"
+    }
+    
+    preset-column-widths {
+        proportion 0.25
+        proportion 0.5
+        proportion 0.75
+        proportion 1.0
+    }
+    
+    default-column-width {
+        proportion 0.5
+    }
+    
+    center-focused-column "never"
 }
 
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot-%Y-%m-%d-%H-%M-%S.png"
+
+// Keybindings
 binds {
-    Mod+Return spawn "alacritty"
-    Mod+D spawn "rofi -show drun"
-    Mod+Q close-window
+    // Terminal & Launcher (adapted to your tools)
+    Mod+Return { spawn "alacritty"; }
+    Mod+D { spawn "rofi" "-show" "drun"; }
+    Mod+Q { close-window; }
+    
+    // Window management (from Kaku)
+    Mod+S { switch-preset-column-width; }
+    Mod+F { maximize-column; }
+    Mod+1 { set-column-width "25%"; }
+    Mod+2 { set-column-width "50%"; }
+    Mod+3 { set-column-width "75%"; }
+    Mod+4 { set-column-width "100%"; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+Space { toggle-window-floating; }
+    Mod+W { toggle-column-tabbed-display; }
+    Mod+Comma { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+    Mod+C { center-column; }
+    Mod+Tab { focus-column-first; }
+    
+    // Column sizing
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Plus { set-column-width "+10%"; }
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Plus { set-window-height "+10%"; }
+    
+    // Focus (Vim-style)
+    Mod+H { focus-column-left; }
+    Mod+L { focus-column-right; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+    
+    // Focus (Arrow keys)
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Down { focus-window-down; }
+    Mod+Up { focus-window-up; }
+    
+    // Move windows
+    Mod+Shift+H { move-column-left; }
+    Mod+Shift+L { move-column-right; }
+    Mod+Shift+K { move-window-up; }
+    Mod+Shift+J { move-window-down; }
+    
+    // Workspaces
+    Mod+Ctrl+Down { focus-workspace-down; }
+    Mod+Ctrl+Up { focus-workspace-up; }
+    Mod+Shift+Ctrl+J { move-column-to-workspace-down; }
+    Mod+Shift+Ctrl+K { move-column-to-workspace-up; }
+    
+    // Screenshots
+    Print { screenshot-screen; }
+    Mod+Shift+S { screenshot; }
+    Mod+Shift+Alt+S { screenshot-window; }
+    
+    // Media keys
+    XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    XF86AudioNext { spawn "playerctl" "next"; }
+    XF86AudioPrev { spawn "playerctl" "previous"; }
+    XF86AudioRaiseVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86MonBrightnessUp { spawn "brightnessctl" "set" "5%+"; }
+    XF86MonBrightnessDown { spawn "brightnessctl" "set" "5%-"; }
+    
+    // Thunar
+    Mod+E { spawn "thunar"; }
+
+    // System
+    Mod+Shift+E { quit; }
 }
+
+// Autostart
+spawn-at-startup "waybar"
+spawn-at-startup "dunst"
+spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
+spawn-at-startup "swww-daemon"
+spawn-at-startup "swww" "img" "/path/to/your/wallpaper.png"

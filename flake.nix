@@ -7,9 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur.url = "github:nix-community/NUR";  # Add this line
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, nur, ... }:  # Add nur here
   let
     system = "x86_64-linux";
   in
@@ -26,6 +27,9 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.juso = import ./home/juso.nix;
+          
+          # Add NUR overlay
+          nixpkgs.overlays = [ nur.overlays.default ];  # Add this
         }
       ];
     };

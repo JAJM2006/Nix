@@ -1,0 +1,27 @@
+# Nix build results
+result
+result-*
+
+# Backup directory (personal backups, not part of config)
+Backup/
+
+# Secrets
+secrets/*
+!secrets/.gitkeep
+
+# Backup files and editor temps
+*.bak
+*~
+.*.swp
+*.swn
+*.swo
+
+# Hardware config (machine-specific, don't share)
+system/hosts/*/hardware-configuration.nix
+
+# Optional: Uncomment if you don't want to track flake.lock
+# flake.lock
+
+# OS generated files
+.DS_Store
+Thumbs.db

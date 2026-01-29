@@ -76,21 +76,25 @@
 
   # Greetd
   services.greetd = {
-  enable = true;
-  settings = {
-    default_session = {
-      command = "${pkgs.niri}/bin/niri-session";
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${pkgs.niri}/bin/niri-session";
+        user = "greeter";
+      };
     };
   };
-};
 
   # Wayland
   environment.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
   };
-
-  # zsh
+  programs.niri.enable = true;
+  # security.polkit.enable = true;
+  # services.dbus.enable = true;
+ 
+ # zsh
   programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -111,6 +115,7 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
+    niri
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -132,7 +137,23 @@
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
+  # USB automounting and file management
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+  services.devmon.enable = true;
 
+  # Thunar with all the extras
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-volman
+      thunar-archive-plugin
+      thunar-media-tags-plugin
+    ]; 
+  };
+
+  # Thumbnail support
+  services.tumbler.enable = true;
 
 	# DO NOT TOUCH
 

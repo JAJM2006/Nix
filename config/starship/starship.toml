@@ -1,0 +1,18 @@
+format = """
+[┌─](bold blue)$directory$git_branch$git_status
+[└─](bold blue)$character"""
+
+[directory]
+style = "bold cyan"
+truncation_length = 3
+
+[git_branch]
+symbol = " "
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[✗](bold red)"
