@@ -11,7 +11,6 @@
     cmus
     htop
     neofetch
-    # git moved to programs.git below
     neovim
     ripgrep
     fd
@@ -24,11 +23,23 @@
 
   programs.btop.enable = true;
   programs.fzf.enable = true;
-  programs.zsh.enable = true;  # Removed the bad line
+  
+  programs.zsh = {
+    enable = true;
+    initContent = ''
+      export PATH=$HOME/Settings/scripts:$PATH
+      export EDITOR=nvim
+      export VISUAL=nvim
+    '';
+  };
   
   programs.git = {
     enable = true;
-    userName = "Geordie Mac";
-    userEmail = "Git@JAJM2006.uk";
+    settings = {
+      user = {
+        name = "Geordie Mac";
+        email = "Git@JAJM2006.uk";
+      };
+    };
   };
 }
