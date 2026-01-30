@@ -28,9 +28,11 @@
     direnv                 # Directory-specific environments
     eza                    # Modern ls replacement
     fd                     # Modern find replacement
-    firefox		   # Web browser
+    firefox                # Web browser
+    gum                    # Shell scripting
     htop                   # Interactive process viewer
     neofetch               # System information tool
+    nix-output-monitor     # Output monitoring
     playerctl              # Media player controller
     ripgrep                # Fast grep alternative
     tree                   # Directory tree viewer
@@ -45,7 +47,7 @@
     # --------------------------------------------------------------------------
     # Text Editors
     # --------------------------------------------------------------------------
-    # neovim                 # ~ Commented out as used elsewhere ~
+    # neovim               # ~ Commented out as used elsewhere ~
     
     # --------------------------------------------------------------------------
     # Media

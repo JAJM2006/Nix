@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Define colors
+GUM_CONFIRM_PROMPT_COLOR="#87afff"
+
+choice=$(gum choose "System Rebuild" "Garbage Collection" "Optimize Store" "Update Flake" "Exit")
+
+case $choice in
+    "System Rebuild")
+        echo "🚀 Starting Rebuild..."
+        # Using 'nom' for the pretty Nyx-style output
+        sudo nixos-rebuild switch --flake . |& nom
+        ;;
+
+    "Garbage Collection")
+        days=$(gum input --placeholder "Keep how many days of history? (e.g. 7d)")
+        echo "🗑️  Deleting generations older than $days..."
+        sudo nix-env --delete-generations +$days --profile /nix/var/nix/profiles/system
+        sudo nix-collect-garbage -d
+        ;;
+
+    "Optimize Store")
+        echo "🧹 Deduplicating nix store..."
+        nix-store --optimise
+        ;;
+
+    "Update Flake")
+        echo "🔄 Updating flake.lock..."
+        nix flake update
+        ;;
+
+    "Exit")
+        exit 0
+        ;;
+esac
+
+gum style --foreground 212 "✨ Maintenance Complete!"
