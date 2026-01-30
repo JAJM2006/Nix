@@ -38,8 +38,10 @@
           "compactMode": true,
           "diskPath": "/",
           "id": "SystemMonitor",
+          "showCpuFreq": false,
           "showCpuTemp": true,
           "showCpuUsage": true,
+          "showDiskAsFree": false,
           "showDiskUsage": false,
           "showGpuTemp": false,
           "showLoadAverage": false,
@@ -148,8 +150,8 @@
     "screenOverrides": []
   },
   "general": {
-    "avatarImage": "/home/juso/Pictures/Wallpapers/astronaut.jpg",
-    "dimmerOpacity": 0.1,
+    "avatarImage": "/home/juso/.face/face.jpg",
+    "dimmerOpacity": 0.2,
     "showScreenCorners": false,
     "forceBlackScreenCorners": false,
     "scaleRatio": 1,
@@ -162,7 +164,7 @@
     "compactLockScreen": false,
     "lockOnSuspend": true,
     "showSessionButtonsOnLockScreen": true,
-    "showHibernateOnLockScreen": false,
+    "showHibernateOnLockScreen": true,
     "enableShadows": true,
     "shadowDirection": "bottom_right",
     "shadowOffsetX": 2,
@@ -174,7 +176,7 @@
     "enableLockScreenCountdown": true,
     "lockScreenCountdownDuration": 10000,
     "autoStartAuth": false,
-    "allowPasswordWithFprintd": false
+    "allowPasswordWithFprintd": true
   },
   "ui": {
     "fontDefault": "Sans Serif",
@@ -192,7 +194,7 @@
     "boxBorderEnabled": false
   },
   "location": {
-    "name": "Milton Keynes",
+    "name": "London",
     "weatherEnabled": true,
     "weatherShowEffects": true,
     "useFahrenheit": false,
@@ -203,7 +205,7 @@
     "analogClockInCalendar": false,
     "firstDayOfWeek": -1,
     "hideWeatherTimezone": false,
-    "hideWeatherCityName": true
+    "hideWeatherCityName": false
   },
   "calendar": {
     "cards": [
@@ -255,7 +257,7 @@
     "wallhavenResolutionHeight": ""
   },
   "appLauncher": {
-    "enableClipboardHistory": true,
+    "enableClipboardHistory": false,
     "autoPasteClipboard": false,
     "enableClipPreview": true,
     "clipboardWrapText": true,
@@ -370,11 +372,9 @@
     "floatingRatio": 1,
     "size": 1,
     "onlySameOutput": true,
-    "monitors": [
-      "DP-1"
-    ],
+    "monitors": [],
     "pinnedApps": [],
-    "colorizeIcons": true,
+    "colorizeIcons": false,
     "pinnedStatic": false,
     "inactiveIndicators": false,
     "deadOpacity": 0.6,
@@ -491,7 +491,7 @@
   },
   "colorSchemes": {
     "useWallpaperColors": true,
-    "predefinedScheme": "Eldritch",
+    "predefinedScheme": "Noctalia (default)",
     "darkMode": true,
     "schedulingMode": "off",
     "manualSunrise": "06:30",
@@ -513,7 +513,7 @@
     "manualSunset": "18:30"
   },
   "hooks": {
-    "enabled": true,
+    "enabled": false,
     "wallpaperChange": "",
     "darkModeChange": "",
     "screenLock": "",
