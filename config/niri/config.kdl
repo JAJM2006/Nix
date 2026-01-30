@@ -51,8 +51,16 @@ cursor {
 // ==============================================================================
 
 layout {
-    gaps 6
+    gaps 16
     
+    
+    struts{
+        left 10
+        right 10
+        top 5
+        bottom 10
+    }
+
     border {
         width 2
         active-color "#7aa2f7"      // Tokyo Night blue
@@ -74,6 +82,42 @@ layout {
 }
 
 prefer-no-csd
+
+// ==============================================================================
+// WINDOW RULE CONFIGURATION
+// ==============================================================================
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+    match is-active=false
+    opacity 0.85
+    draw-border-with-background false
+}
+
+// ==============================================================================
+// ANIMATIONS
+// ==============================================================================
+
+animations {
+    horizontal-view-movement {
+        spring stiffness=1000 damping-ratio=1.0 epsilon=0.0001
+    }
+
+    workspace-switch {
+        spring stiffness=1000 damping-ratio=1.0 epsilon=0.0001
+    }
+
+    window-open {
+        duration-ms 250
+        curve "ease-out-expo"
+    }
+
+    window-close {
+        duration-ms 200
+        curve "ease-out-quad"  // Changed from ease-in-out-cubic
+    }
+}
 
 // ==============================================================================
 // SCREENSHOTS
@@ -190,7 +234,8 @@ binds {
     // System Control
     // --------------------------------------------------------------------------
     Mod+Shift+E { quit; }                                  // Quit niri
-}
+    Mod+Shift+R { spawn "niri-msg" "action" "reload-config"; }
+  }
 
 // ==============================================================================
 // AUTOSTART APPLICATIONS

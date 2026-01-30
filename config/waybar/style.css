@@ -1,136 +1,70 @@
+/* Clean slate with better anti-aliasing */
 * {
     border: none;
     border-radius: 0;
-    font-family: "FiraCode Nerd Font", "Font Awesome 6 Free";
-    font-size: 13px;
+    font-family: "FiraCode Nerd Font", "Fira Code", "Symbols Nerd Font Mono";
+    font-size: 14px;
     min-height: 0;
 }
 
+/* The Bar itself - making it floating and transparent */
 window#waybar {
-    background: #1a1b26;
+    background: rgba(26, 27, 38, 0.85); /* Tokyo Night with 85% opacity */
     color: #c0caf5;
+    transition-property: background-color;
+    transition-duration: .5s;
+    border-bottom: 1px solid rgba(122, 162, 247, 0.2); /* Subtle glow at bottom */
 }
 
-/* Launcher button */
+/* Individual Module Segments */
+#cpu, #memory, #disk, #tray, #pulseaudio, #network, #battery {
+    background: rgba(36, 40, 59, 0.7);
+    padding: 0 14px;
+    margin: 6px 3px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Soft border highlight */
+}
+
+/* High Contrast "Hero" Modules */
+#custom-launcher, #clock, #custom-power {
+    padding: 0 16px;
+    margin: 6px 4px;
+    border-radius: 12px;
+    font-weight: 800;
+}
+
 #custom-launcher {
-    background: #7aa2f7;
+    background: linear-gradient(45deg, #7aa2f7, #7dcfff);
     color: #1a1b26;
-    padding: 0 15px;
-    margin: 4px 4px 4px 8px;
-    border-radius: 8px;
-    font-size: 18px;
+    margin-left: 12px;
 }
 
-#custom-launcher:hover {
-    background: #7dcfff;
-}
-
-/* Left modules */
-#cpu,
-#memory,
-#disk {
-    background: #24283b;
-    color: #c0caf5;
-    padding: 0 12px;
-    margin: 4px 2px;
-    border-radius: 8px;
-}
-
-#cpu {
-    color: #7dcfff;
-}
-
-#memory {
-    color: #bb9af7;
-}
-
-#disk {
-    color: #9ece6a;
-}
-
-/* Clock */
 #clock {
-    background: #7aa2f7;
-    color: #1a1b26;
-    padding: 0 20px;
-    margin: 4px;
-    border-radius: 8px;
-    font-weight: bold;
+    background: rgba(122, 162, 247, 0.15); /* Glassy clock */
+    color: #7aa2f7;
+    border: 1px solid rgba(122, 162, 247, 0.5);
+    font-size: 15px;
 }
 
-/* Right modules */
-#tray,
-#pulseaudio,
-#network,
-#battery {
-    background: #24283b;
-    color: #c0caf5;
-    padding: 0 12px;
-    margin: 4px 2px;
-    border-radius: 8px;
-}
-
-#pulseaudio {
-    color: #7dcfff;
-}
-
-#pulseaudio.muted {
-    color: #f7768e;
-}
-
-#network {
-    color: #9ece6a;
-}
-
-#network.disconnected {
-    color: #f7768e;
-}
-
-#battery {
-    color: #e0af68;
-}
-
-#battery.charging {
-    color: #9ece6a;
-}
-
-#battery.warning:not(.charging) {
-    color: #e0af68;
-}
-
-#battery.critical:not(.charging) {
-    color: #f7768e;
-    animation: blink 1s linear infinite;
-}
-
-/* Power button */
 #custom-power {
-    background: #f7768e;
+    background: linear-gradient(45deg, #f7768e, #ff9e9e);
     color: #1a1b26;
-    padding: 0 15px;
-    margin: 4px 8px 4px 4px;
-    border-radius: 8px;
-    font-size: 16px;
+    margin-right: 12px;
 }
 
-#custom-power:hover {
-    background: #ff9e9e;
+/* Hover effects for interactivity */
+#custom-launcher:hover, #custom-power:hover {
+    brightness: 1.2;
+    transition: 0.3s;
 }
 
-/* Tooltip styling */
-tooltip {
-    background: #1a1b26;
-    border: 2px solid #7aa2f7;
-    border-radius: 8px;
-}
-
-tooltip label {
-    color: #c0caf5;
-}
-
-/* Animations */
-@keyframes blink {
-    to {
-        opacity: 0.5;
-    }
-}
+/* Status specific colors - staying true to your Tokyo Night palette */
+#cpu { color: #7dcfff; }
+#memory { color: #bb9af7; }
+#disk { color: #9ece6a; }
+#pulseaudio { color: #7dcfff; }
+#pulseaudio.muted { color: #f7768e; }
+#network { color: #9ece6a; }
+#network.disconnected { color: #f7768e; }
+#battery { color: #e0af68; }
+#battery.charging { color: #9ece6a; }
