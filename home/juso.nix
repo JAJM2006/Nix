@@ -1,3 +1,9 @@
+# ==============================================================================
+# JAJM2006's  NIXOS HOME MANAGER CONFIGURATION - EliteDesk
+# ==============================================================================
+# This is the main system configuration file for NixOS using nix.
+# Documentation: https://github.com/nix-community/home-manager
+# ==============================================================================
 { config, pkgs, ... }:
 
 {
@@ -22,6 +28,7 @@
     direnv                 # Directory-specific environments
     eza                    # Modern ls replacement
     fd                     # Modern find replacement
+    firefox		   # Web browser
     htop                   # Interactive process viewer
     neofetch               # System information tool
     playerctl              # Media player controller
@@ -38,7 +45,7 @@
     # --------------------------------------------------------------------------
     # Text Editors
     # --------------------------------------------------------------------------
-    neovim                 # Vim-based text editor
+    # neovim                 # ~ Commented out as used elsewhere ~
     
     # --------------------------------------------------------------------------
     # Media
@@ -91,7 +98,10 @@
       "${config.home.homeDirectory}/Settings/config/starship";
     
     ".config/waybar".source = config.lib.file.mkOutOfStoreSymlink 
-      "${config.home.homeDirectory}/Settings/config/waybar";
+     "${config.home.homeDirectory}/Settings/config/waybar";
+
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/nvim";
   };
 
   # ============================================================================
@@ -163,7 +173,28 @@
       };
     };
   };
-  
+
+  # ----------------------------------------------------------------------------
+  # LazyVim
+  # ----------------------------------------------------------------------------
+  programs.neovim = {
+    enable = true;
+    defaultEditor = false;
+
+    extraPackages = with pkgs; [
+      ripgrep
+      fd
+      gcc
+      gnumake
+      unzip
+      
+      # LSPs & Formatters
+      lua-language-server
+      stylua
+      nixd
+    ];
+  };
+
   # ----------------------------------------------------------------------------
   # Starship Prompt
   # ----------------------------------------------------------------------------
