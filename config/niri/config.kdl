@@ -134,7 +134,7 @@ binds {
     // Applications
     // --------------------------------------------------------------------------
     Mod+Return { spawn "alacritty"; }                      // Terminal
-    Mod+D { spawn "rofi" "-show" "drun"; }                 // App launcher
+    Mod+D { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }                 // App launcher
     Mod+E { spawn "thunar"; }                              // File manager
     
     // --------------------------------------------------------------------------
@@ -157,7 +157,6 @@ binds {
     // --------------------------------------------------------------------------
     // Column Width Presets
     // --------------------------------------------------------------------------
-    Mod+S { switch-preset-column-width; }                  // Switch preset
     Mod+1 { set-column-width "25%"; }                      // 25% width
     Mod+2 { set-column-width "50%"; }                      // 50% width
     Mod+3 { set-column-width "75%"; }                      // 75% width
@@ -167,9 +166,9 @@ binds {
     // Column & Window Sizing
     // --------------------------------------------------------------------------
     Mod+Minus { set-column-width "-10%"; }                 // Decrease width
-    Mod+Plus { set-column-width "+10%"; }                  // Increase width
+    Mod+Equal { set-column-width "+10%"; }                  // Increase width
     Mod+Shift+Minus { set-window-height "-10%"; }          // Decrease height
-    Mod+Shift+Plus { set-window-height "+10%"; }           // Increase height
+    Mod+Shift+Equal { set-window-height "+10%"; }           // Increase height
     
     // --------------------------------------------------------------------------
     // Focus Navigation (Vim-style)
@@ -200,8 +199,8 @@ binds {
     // --------------------------------------------------------------------------
     Mod+Ctrl+Down { focus-workspace-down; }                // Next workspace
     Mod+Ctrl+Up { focus-workspace-up; }                    // Previous workspace
-    Mod+Shift+Ctrl+J { move-column-to-workspace-down; }    // Move to next WS
-    Mod+Shift+Ctrl+K { move-column-to-workspace-up; }      // Move to prev WS
+    Mod+Shift+Down { move-column-to-workspace-down; }    // Move to next WS
+    Mod+Shift+Up { move-column-to-workspace-up; }      // Move to prev WS
     
     // --------------------------------------------------------------------------
     // Screenshots
@@ -246,7 +245,7 @@ binds {
 // AUTOSTART APPLICATIONS
 // ==============================================================================
 
-spawn-at-startup "waybar"                                  // Status bar
+spawn-at-startup "noctalia-shell"                // Status bar
 spawn-at-startup "dunst"                                   // Notifications
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"   // Clipboard manager
 spawn-at-startup "swww-daemon"                             // Wallpaper daemon

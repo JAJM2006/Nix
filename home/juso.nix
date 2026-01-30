@@ -4,9 +4,17 @@
 # This is the main system configuration file for NixOS using nix.
 # Documentation: https://github.com/nix-community/home-manager
 # ==============================================================================
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
+  # ============================================================================
+  # IMPORTS
+  # ============================================================================
+  
+  imports = [
+    inputs.noctalia.homeModules.default
+  ];
+
   # ============================================================================
   # USER INFORMATION
   # ============================================================================
@@ -60,6 +68,7 @@
     cliphist               # Clipboard history manager
     dunst                  # Notification daemon
     grim                   # Screenshot utility
+    mangohud		   # Gaming HUD
     rofi                   # Application launcher
     slurp                  # Region selector for screenshots
     swww		   # Wallpaper daemom (wayland)
@@ -122,11 +131,25 @@
   programs.fzf.enable = true;
   
   # ----------------------------------------------------------------------------
+  # Noctalia Shell
+  # ----------------------------------------------------------------------------
+  programs.noctalia-shell = {
+    enable = true;
+    settings = "${config.home.homeDirectory}/Settings/config/noctalia/settings.json";
+  };
+  
+  # ----------------------------------------------------------------------------
   # Shell Configuration
   # ----------------------------------------------------------------------------
   programs.zsh = {
     enable = true;
+   
+    # Enable case-insensitive completion
     initContent = ''
+      
+      # Case-insensitive completion
+      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+      
       # Path configuration
       export PATH=$HOME/Settings/scripts:$PATH
       
@@ -214,4 +237,23 @@
     enable = true;
     enableZshIntegration = true;
   };
+ 
+  # ----------------------------------------------------------------------------
+  # SSH Configuration
+  # ----------------------------------------------------------------------------
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "*" = {
+        addKeysToAgent = "yes";
+      };
+    };
+  };
+  
+  services.ssh-agent.enable = true;
+
+# ============================================================================
+# END OF HOME/JUSO.NIX
+# ============================================================================
 }

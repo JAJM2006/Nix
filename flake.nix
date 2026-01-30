@@ -17,7 +17,12 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+   
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # nix-darwin for macOS system management
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -29,7 +34,7 @@
   # OUTPUTS
   # ============================================================================
   
-  outputs = { self, nixpkgs, nixpkgs-darwin, home-manager, darwin, ... }:
+  outputs = { self, nixpkgs, nixpkgs-darwin, home-manager, darwin, noctalia, ... }@inputs:
   let
     # System architectures
     linuxSystem = "x86_64-linux";
@@ -58,6 +63,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.juso = import ./home/juso.nix;
+            home-manager.extraSpecialArgs = { inherit inputs; };
           }
         ];
       };

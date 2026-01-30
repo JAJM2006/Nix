@@ -103,14 +103,13 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd ${pkgs.niri}/bin/niri-session";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${pkgs.niri}/bin/niri-session";
       };
     };
   };
   
   # Enable niri window manager
   programs.niri.enable = true;
-  programs.xwayland.enable = true;
   
   # Wayland environment variables
   environment.sessionVariables = {
@@ -152,19 +151,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # ============================================================================
-  # GAMING
-  # ============================================================================
-  
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;  # Open ports for Steam Remote Play
-    dedicatedServer.openFirewall = true;  # Open ports for Source Dedicated Server
-  };
-  
-  # Enable GameMode for performance optimization
-  programs.gamemode.enable = true;
 
   # ============================================================================
   # USER ACCOUNTS
