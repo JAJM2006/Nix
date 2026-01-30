@@ -62,6 +62,7 @@
     grim                   # Screenshot utility
     rofi                   # Application launcher
     slurp                  # Region selector for screenshots
+    swww		   # Wallpaper daemom (wayland)
     waybar                 # Status bar
     wl-clipboard           # Wayland clipboard utilities
     
@@ -144,6 +145,15 @@
       
       # Quick status check
       alias gs='git status'
+
+      # Wallpaper funtions
+      wall() {
+	swww img "$1" --transition-type wipe --transition-angle 30
+      }
+
+      wallrandom() {
+	swww img "$(find ~/Pictures/Wallpapers -type f | shuf -n 1)" --transition-type random
+      }
     '';
   };
   

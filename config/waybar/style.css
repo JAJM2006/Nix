@@ -54,7 +54,6 @@ window#waybar {
 
 /* Hover effects for interactivity */
 #custom-launcher:hover, #custom-power:hover {
-    brightness: 1.2;
     transition: 0.3s;
 }
 

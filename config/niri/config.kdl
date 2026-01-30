@@ -211,6 +211,11 @@ binds {
     Mod+Shift+Alt+S { screenshot-window; }                 // Current window
     
     // --------------------------------------------------------------------------
+    // Wallpaper Control
+    // --------------------------------------------------------------------------
+    Mod+Shift+W { spawn "sh" "-c" "swww img $(find ~/Pictures/Wallpapers -type f | shuf -n 1) --transition-type random"; }  // Random wallpaper
+    
+    // --------------------------------------------------------------------------
     // Media Keys
     // --------------------------------------------------------------------------
     XF86AudioPlay { spawn "playerctl" "play-pause"; }
@@ -244,3 +249,5 @@ binds {
 spawn-at-startup "waybar"                                  // Status bar
 spawn-at-startup "dunst"                                   // Notifications
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"   // Clipboard manager
+spawn-at-startup "swww-daemon"                             // Wallpaper daemon
+spawn-at-startup "sh" "-c" "sleep 2 && swww img ~/Pictures/Wallpapers/default.jpg --transition-type wipe"  // Initial wallpaper

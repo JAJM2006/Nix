@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# ==============================================================================
+# Interactive Wallpaper Selector for swww + rofi
+# ==============================================================================
+# This script shows thumbnails of your wallpapers in rofi for easy selection
+# Usage: Add this to ~/Settings/scripts/wallpaper-selector and bind it to a key
+# ==============================================================================
+
+WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+CACHE_DIR="$HOME/.cache/wallpaper-thumbs"
+
+# Create cache directory for thumbnails
+mkdir -p "$CACHE_DIR"
+
+# Check if wallpaper directory exists
+if [ ! -d "$WALLPAPER_DIR" ]; then
+    notify-send "Wallpaper Selector" "Wallpaper directory not found: $WALLPAPER_DIR"
+    exit 1
+fi
+
+# Get list of wallpapers
+WALLPAPERS=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) | sort)
+
+# Check if there are any wallpapers
+if [ -z "$WALLPAPERS" ]; then
+    notify-send "Wallpaper Selector" "No wallpapers found in $WALLPAPER_DIR"
+    exit 1
+fi
+
+# Create options for rofi
+OPTIONS=""
+while IFS= read -r wallpaper; do
+    filename=$(basename "$wallpaper")
+    OPTIONS="$OPTIONS$filename\n"
+done <<< "$WALLPAPERS"
+
+# Show rofi menu
+SELECTED=$(echo -e "$OPTIONS" | rofi -dmenu -i -p "Select Wallpaper" -theme-str 'window {width: 50%;}')
+
+# If user cancelled, exit
+if [ -z "$SELECTED" ]; then
+    exit 0
+fi
+
+# Find the full path of selected wallpaper
+SELECTED_PATH=$(echo "$WALLPAPERS" | grep "/$SELECTED$")
+
+# Apply wallpaper with random transition
+if [ -n "$SELECTED_PATH" ]; then
+    swww img "$SELECTED_PATH" --transition-type random --transition-duration 1.5
+    notify-send "Wallpaper Changed" "Now showing: $SELECTED"
+fi
