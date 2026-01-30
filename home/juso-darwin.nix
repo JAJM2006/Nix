@@ -1,12 +1,18 @@
-{ config, pkgs, ... }:
+# ==============================================================================
+# JAJM2006's  NIX-DARWIN HOME MANAGER CONFIGURATION - MacBook
+# ==============================================================================
+# This is the main system configuration file for macOS using nix-darwin.
+# Documentation: https://github.com/LnL7/nix-darwin
+# ============================================================================== 
+{config, pkgs, ... }:
 
 {
   # ============================================================================
   # USER INFORMATION
   # ============================================================================
   
-  home.username = "juso";
-  home.homeDirectory = "/Users/juso";
+  home.username = "joshuamcmanus";
+  home.homeDirectory = "/Users/joshuamcmanus";
   home.stateVersion = "24.05";
 
   # ============================================================================
@@ -83,7 +89,8 @@
     initContent = ''
       # Path configuration
       export PATH=$HOME/Settings/scripts:$PATH
-      
+      export PATH=$HOME/.nix-profile/bin:$PATH
+
       # Editor configuration
       export EDITOR=nvim
       export VISUAL=nvim
@@ -111,28 +118,20 @@
   # Git Configuration
   # ----------------------------------------------------------------------------
   programs.git = {
-    enable = true;
-    
-    settings = {
-      user = {
-        name = "Geordie Mac";
-        email = "Joshua.McManus2006@gmail.com";
-      };
-      
-      alias = {
-        # Quick operations
-        st = "status";
-        co = "checkout";
-        br = "branch";
-        cm = "commit -m";
-        cdev = "checkout dev";
-        cmain = "checkout main";
-        
-        # Advanced
-        last = "log -1 HEAD";
-        unstage = "reset HEAD --";
-        amend = "commit --amend --no-edit";
-      };
+  enable = true;
+  userName = "Geordie Mac";
+  userEmail = "Joshua.McManus2006@gmail.com";
+  
+  aliases = {
+    st = "status";
+    co = "checkout";
+    br = "branch";
+    cm = "commit -m";
+    cdev = "checkout dev";
+    cmain = "checkout main";
+    last = "log -1 HEAD";
+    unstage = "reset HEAD --";
+    amend = "commit --amend --no-edit";
     };
   };
   

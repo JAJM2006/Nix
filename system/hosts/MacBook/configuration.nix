@@ -13,12 +13,11 @@
   # ============================================================================
   
   nix.settings = {
-    # Enable flakes and nix-command
     experimental-features = [ "nix-command" "flakes" ];
-    
-    # Store optimization
-    auto-optimise-store = true;
   };
+  
+  # CHANGED: Use nix.optimise.automatic instead
+  nix.optimise.automatic = true;
 
   # ============================================================================
   # SYSTEM PACKAGES
@@ -31,37 +30,26 @@
   ];
 
   # ============================================================================
-  # HOMEBREW (Optional - for Mac-specific apps)
+  # PRIMARY USER
+  # ============================================================================
+  
+  system.primaryUser = "joshuamcmanus";  # CHANGED from juso
+
+  # ============================================================================
+  # HOMEBREW
   # ============================================================================
   
   homebrew = {
     enable = true;
     
-    # Automatically update Homebrew
     onActivation = {
       autoUpdate = true;
       cleanup = "zap";
       upgrade = true;
     };
     
-    # Formulae (CLI tools)
-    brews = [
-      # "mas"  # Mac App Store CLI (uncomment if needed)
-    ];
-    
-    # Casks (GUI applications)
-    casks = [
-      # Examples - uncomment what you want:
-      # "firefox"
-      # "visual-studio-code"
-      # "rectangle"  # Window manager
-      # "alacritty"  # Terminal
-    ];
-    
-    # Mac App Store apps (requires mas)
-    # masApps = {
-    #   "Xcode" = 497799835;
-    # };
+    brews = [ ];
+    casks = [ ];
   };
 
   # ============================================================================
@@ -69,9 +57,7 @@
   # ============================================================================
   
   system = {
-    # macOS defaults
     defaults = {
-      # Dock settings
       dock = {
         autohide = true;
         orientation = "bottom";
@@ -79,7 +65,6 @@
         tilesize = 48;
       };
       
-      # Finder settings
       finder = {
         AppleShowAllExtensions = true;
         FXEnableExtensionChangeWarning = false;
@@ -87,11 +72,10 @@
         _FXShowPosixPathInTitle = true;
       };
       
-      # Global macOS settings
       NSGlobalDomain = {
-        AppleInterfaceStyle = "Dark";  # Dark mode
-        AppleKeyboardUIMode = 3;       # Full keyboard access
-        ApplePressAndHoldEnabled = false;  # Key repeat instead of accents
+        AppleInterfaceStyle = "Dark";
+        AppleKeyboardUIMode = 3;
+        ApplePressAndHoldEnabled = false;
         InitialKeyRepeat = 15;
         KeyRepeat = 2;
         NSAutomaticCapitalizationEnabled = false;
@@ -103,48 +87,33 @@
         NSTableViewDefaultSizeMode = 2;
       };
       
-      # Trackpad settings
       trackpad = {
-        Clicking = true;  # Tap to click
+        Clicking = true;
         TrackpadThreeFingerDrag = true;
       };
     };
     
-    # Keyboard settings
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToControl = true;
     };
     
-    # System state version
     stateVersion = 5;
-  };
-
-  # ============================================================================
-  # SERVICES
-  # ============================================================================
-  
-  services = {
-    # Nix daemon
-    nix-daemon.enable = true;
   };
 
   # ============================================================================
   # PROGRAMS
   # ============================================================================
   
-  programs = {
-    # Enable zsh system-wide
-    zsh.enable = true;
-  };
+  programs.zsh.enable = true;
 
   # ============================================================================
   # USER CONFIGURATION
   # ============================================================================
   
-  users.users.juso = {
-    name = "juso";
-    home = "/Users/juso";
+  users.users.joshuamcmanus = {  # CHANGED from juso
+    name = "joshuamcmanus";
+    home = "/Users/joshuamcmanus";
     shell = pkgs.zsh;
   };
 
@@ -152,9 +121,7 @@
   # FONTS
   # ============================================================================
   
-  fonts = {
-    packages = with pkgs; [
-      nerd-fonts.fira-code
-    ];
-  };
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+  ];
 }

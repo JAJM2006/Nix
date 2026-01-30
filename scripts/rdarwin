@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
-
-# Rebuild macOS system using nix-darwin
-# Usage: ./rdarwin
-
 set -e
-
 cd ~/Settings
-
-echo " Rebuilding macOS system with nix-darwin..."
-
-darwin-rebuild switch --flake .#MacBook
-
-echo " Done! You may need to restart your terminal for changes to take effect."
+echo "🔨 Rebuilding macOS system with nix-darwin..."
+sudo darwin-rebuild switch --flake .#MacBook
+echo "✅ Done! Restart your terminal for changes to take effect."

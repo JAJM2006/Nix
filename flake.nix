@@ -91,7 +91,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.juso = import ./home/juso-darwin.nix;
+            home-manager.users.joshuamcmanus = import ./home/juso-darwin.nix;
           }
         ];
       };
