@@ -1,37 +1,62 @@
 {
-  description = "Joshua's NixOS Config Platform";
+  description = "Joshua's NixOS Configuration Platform";
 
+  # ============================================================================
+  # INPUTS
+  # ============================================================================
+  
   inputs = {
+    # NixOS unstable channel
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    
+    # Home Manager for user environment management
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur.url = "github:nix-community/NUR";  # Add this line
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, ... }:  # Add nur here
+  # ============================================================================
+  # OUTPUTS
+  # ============================================================================
+  
+  outputs = { self, nixpkgs, home-manager, ... }:
   let
     system = "x86_64-linux";
   in
   {
-    nixosConfigurations.EliteDesk = nixpkgs.lib.nixosSystem {
-      inherit system;
-
-      modules = [
-        ./system/hosts/EliteDesk/configuration.nix
+     # ==========================================================================
+     # NIXOS CONFIGURATIONS
+     # ==========================================================================
+    
+    nixosConfigurations = {
+       # ------------------------------------------------------------------------
+       # EliteDesk - Main Desktop Configuration
+       # ------------------------------------------------------------------------
+      EliteDesk = nixpkgs.lib.nixosSystem {
+        inherit system;
         
-        # Home Manager as NixOS module
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.juso = import ./home/juso.nix;
+        modules = [
+          # System configuration
+          ./system/hosts/EliteDesk/configuration.nix
           
-          # Add NUR overlay
-          nixpkgs.overlays = [ nur.overlays.default ];  # Add this
-        }
-      ];
+          # Home Manager as NixOS module
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.juso = import ./home/juso.nix;
+          }
+        ];
+      };
+      
+       # ------------------------------------------------------------------------
+       # ISO - Bootable Installer with Configuration
+       # ------------------------------------------------------------------------
+       iso = nixpkgs.lib.nixosSystem {
+         inherit system;
+         modules = [ ./iso.nix ];
+      };
     };
   };
 }

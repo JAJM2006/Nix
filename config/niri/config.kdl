@@ -1,4 +1,13 @@
-// Niri Config - Adapted from Kaku
+// ==============================================================================
+// JAJM's NIRI CONFIGURATION - Tokyo Night Theme
+// ==============================================================================
+// Niri is a scrollable-tiling Wayland compositor
+// Documentation: https://github.com/YaLTeR/niri
+// ==============================================================================
+
+// ==============================================================================
+// INPUT CONFIGURATION
+// ==============================================================================
 
 input {
     keyboard {
@@ -19,23 +28,35 @@ input {
     workspace-auto-back-and-forth
 }
 
+// ==============================================================================
+// OUTPUT CONFIGURATION
+// ==============================================================================
+
 output "eDP-1" {
     scale 1.0
     position x=0 y=0
 }
+
+// ==============================================================================
+// CURSOR CONFIGURATION
+// ==============================================================================
 
 cursor {
     xcursor-size 24
     xcursor-theme "Bibata-Modern-Ice"
 }
 
+// ==============================================================================
+// LAYOUT & APPEARANCE
+// ==============================================================================
+
 layout {
     gaps 6
     
     border {
         width 2
-        active-color "#7aa2f7"
-        inactive-color "#3b4261"
+        active-color "#7aa2f7"      // Tokyo Night blue
+        inactive-color "#3b4261"    // Tokyo Night dark blue
     }
     
     preset-column-widths {
@@ -54,85 +75,127 @@ layout {
 
 prefer-no-csd
 
+// ==============================================================================
+// SCREENSHOTS
+// ==============================================================================
+
 screenshot-path "~/Pictures/Screenshots/Screenshot-%Y-%m-%d-%H-%M-%S.png"
 
-// Keybindings
+// ==============================================================================
+// KEYBINDINGS
+// ==============================================================================
+
 binds {
-    // Terminal & Launcher (adapted to your tools)
-    Mod+Return { spawn "alacritty"; }
-    Mod+D { spawn "rofi" "-show" "drun"; }
-    Mod+Q { close-window; }
+    // --------------------------------------------------------------------------
+    // Applications
+    // --------------------------------------------------------------------------
+    Mod+Return { spawn "alacritty"; }                      // Terminal
+    Mod+D { spawn "rofi" "-show" "drun"; }                 // App launcher
+    Mod+E { spawn "thunar"; }                              // File manager
     
-    // Window management (from Kaku)
-    Mod+S { switch-preset-column-width; }
-    Mod+F { maximize-column; }
-    Mod+1 { set-column-width "25%"; }
-    Mod+2 { set-column-width "50%"; }
-    Mod+3 { set-column-width "75%"; }
-    Mod+4 { set-column-width "100%"; }
-    Mod+Shift+F { fullscreen-window; }
-    Mod+Space { toggle-window-floating; }
-    Mod+W { toggle-column-tabbed-display; }
-    Mod+Comma { consume-window-into-column; }
-    Mod+Period { expel-window-from-column; }
-    Mod+C { center-column; }
-    Mod+Tab { focus-column-first; }
+    // --------------------------------------------------------------------------
+    // Window Management
+    // --------------------------------------------------------------------------
+    Mod+Q { close-window; }                                // Close window
+    Mod+F { maximize-column; }                             // Maximize column
+    Mod+Shift+F { fullscreen-window; }                     // Fullscreen
+    Mod+Space { toggle-window-floating; }                  // Toggle floating
+    Mod+W { toggle-column-tabbed-display; }                // Toggle tabbed
+    Mod+C { center-column; }                               // Center column
+    Mod+Tab { focus-column-first; }                        // Focus first column
     
-    // Column sizing
-    Mod+Minus { set-column-width "-10%"; }
-    Mod+Plus { set-column-width "+10%"; }
-    Mod+Shift+Minus { set-window-height "-10%"; }
-    Mod+Shift+Plus { set-window-height "+10%"; }
+    // --------------------------------------------------------------------------
+    // Column Management
+    // --------------------------------------------------------------------------
+    Mod+Comma { consume-window-into-column; }              // Consume window
+    Mod+Period { expel-window-from-column; }               // Expel window
     
-    // Focus (Vim-style)
-    Mod+H { focus-column-left; }
-    Mod+L { focus-column-right; }
-    Mod+J { focus-window-down; }
-    Mod+K { focus-window-up; }
+    // --------------------------------------------------------------------------
+    // Column Width Presets
+    // --------------------------------------------------------------------------
+    Mod+S { switch-preset-column-width; }                  // Switch preset
+    Mod+1 { set-column-width "25%"; }                      // 25% width
+    Mod+2 { set-column-width "50%"; }                      // 50% width
+    Mod+3 { set-column-width "75%"; }                      // 75% width
+    Mod+4 { set-column-width "100%"; }                     // 100% width
     
-    // Focus (Arrow keys)
-    Mod+Left { focus-column-left; }
-    Mod+Right { focus-column-right; }
-    Mod+Down { focus-window-down; }
-    Mod+Up { focus-window-up; }
+    // --------------------------------------------------------------------------
+    // Column & Window Sizing
+    // --------------------------------------------------------------------------
+    Mod+Minus { set-column-width "-10%"; }                 // Decrease width
+    Mod+Plus { set-column-width "+10%"; }                  // Increase width
+    Mod+Shift+Minus { set-window-height "-10%"; }          // Decrease height
+    Mod+Shift+Plus { set-window-height "+10%"; }           // Increase height
     
-    // Move windows
-    Mod+Shift+H { move-column-left; }
-    Mod+Shift+L { move-column-right; }
-    Mod+Shift+K { move-window-up; }
-    Mod+Shift+J { move-window-down; }
+    // --------------------------------------------------------------------------
+    // Focus Navigation (Vim-style)
+    // --------------------------------------------------------------------------
+    Mod+H { focus-column-left; }                           // Focus left
+    Mod+L { focus-column-right; }                          // Focus right
+    Mod+J { focus-window-down; }                           // Focus down
+    Mod+K { focus-window-up; }                             // Focus up
     
-    // Workspaces
-    Mod+Ctrl+Down { focus-workspace-down; }
-    Mod+Ctrl+Up { focus-workspace-up; }
-    Mod+Shift+Ctrl+J { move-column-to-workspace-down; }
-    Mod+Shift+Ctrl+K { move-column-to-workspace-up; }
+    // --------------------------------------------------------------------------
+    // Focus Navigation (Arrow keys)
+    // --------------------------------------------------------------------------
+    Mod+Left { focus-column-left; }                        // Focus left
+    Mod+Right { focus-column-right; }                      // Focus right
+    Mod+Down { focus-window-down; }                        // Focus down
+    Mod+Up { focus-window-up; }                            // Focus up
     
+    // --------------------------------------------------------------------------
+    // Window Movement (Vim-style)
+    // --------------------------------------------------------------------------
+    Mod+Shift+H { move-column-left; }                      // Move left
+    Mod+Shift+L { move-column-right; }                     // Move right
+    Mod+Shift+J { move-window-down; }                      // Move down
+    Mod+Shift+K { move-window-up; }                        // Move up
+    
+    // --------------------------------------------------------------------------
+    // Workspace Management
+    // --------------------------------------------------------------------------
+    Mod+Ctrl+Down { focus-workspace-down; }                // Next workspace
+    Mod+Ctrl+Up { focus-workspace-up; }                    // Previous workspace
+    Mod+Shift+Ctrl+J { move-column-to-workspace-down; }    // Move to next WS
+    Mod+Shift+Ctrl+K { move-column-to-workspace-up; }      // Move to prev WS
+    
+    // --------------------------------------------------------------------------
     // Screenshots
-    Print { screenshot-screen; }
-    Mod+Shift+S { screenshot; }
-    Mod+Shift+Alt+S { screenshot-window; }
+    // --------------------------------------------------------------------------
+    Print { screenshot-screen; }                           // Full screen
+    Mod+Shift+S { screenshot; }                            // Selection
+    Mod+Shift+Alt+S { screenshot-window; }                 // Current window
     
-    // Media keys
+    // --------------------------------------------------------------------------
+    // Media Keys
+    // --------------------------------------------------------------------------
     XF86AudioPlay { spawn "playerctl" "play-pause"; }
     XF86AudioNext { spawn "playerctl" "next"; }
     XF86AudioPrev { spawn "playerctl" "previous"; }
+    
+    // --------------------------------------------------------------------------
+    // Volume Control
+    // --------------------------------------------------------------------------
     XF86AudioRaiseVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
     XF86AudioLowerVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
     XF86AudioMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    
+    // --------------------------------------------------------------------------
+    // Brightness Control
+    // --------------------------------------------------------------------------
     XF86MonBrightnessUp { spawn "brightnessctl" "set" "5%+"; }
     XF86MonBrightnessDown { spawn "brightnessctl" "set" "5%-"; }
     
-    // Thunar
-    Mod+E { spawn "thunar"; }
-
-    // System
-    Mod+Shift+E { quit; }
+    // --------------------------------------------------------------------------
+    // System Control
+    // --------------------------------------------------------------------------
+    Mod+Shift+E { quit; }                                  // Quit niri
 }
 
-// Autostart
-spawn-at-startup "waybar"
-spawn-at-startup "dunst"
-spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
-spawn-at-startup "swww-daemon"
-spawn-at-startup "swww" "img" "/path/to/your/wallpaper.png"
+// ==============================================================================
+// AUTOSTART APPLICATIONS
+// ==============================================================================
+
+spawn-at-startup "waybar"                                  // Status bar
+spawn-at-startup "dunst"                                   // Notifications
+spawn-at-startup "wl-paste" "--watch" "cliphist" "store"   // Clipboard manager

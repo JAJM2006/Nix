@@ -1,103 +1,162 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# ==============================================================================
+# JAJM2006's NIXOS SYSTEM CONFIGURATION - EliteDesk
+# ==============================================================================
+# This is the main system configuration file for NixOS.
+# Help is available in the configuration.nix(5) man page and NixOS manual.
+# ==============================================================================
 
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  # ============================================================================
+  # IMPORTS
+  # ============================================================================
+  
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # ============================================================================
+  # BOOT CONFIGURATION
+  # ============================================================================
+  
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    
+    # Use latest kernel
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  # Flakes, Logging, and Performance enhancements
+  # ============================================================================
+  # NIX CONFIGURATION
+  # ============================================================================
+  
   nix.settings = {
+    # Enable flakes and nix-command
     experimental-features = [ "nix-command" "flakes" ];
     
+    # Logging
     log-lines = 50;
-
+    
+    # Store optimization
     auto-optimise-store = true;
     keep-outputs = true;
     keep-derivations = true;
   };
 
-
-	# NETWORKING AND LOCALISATION
-
-
-
-  networking.hostName = "EliteDesk"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/London";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_GB.UTF-8";
-    LC_IDENTIFICATION = "en_GB.UTF-8";
-    LC_MEASUREMENT = "en_GB.UTF-8";
-    LC_MONETARY = "en_GB.UTF-8";
-    LC_NAME = "en_GB.UTF-8";
-    LC_NUMERIC = "en_GB.UTF-8";
-    LC_PAPER = "en_GB.UTF-8";
-    LC_TELEPHONE = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+  # ============================================================================
+  # NETWORKING
+  # ============================================================================
+  
+  networking = {
+    hostName = "EliteDesk";
+    networkmanager.enable = true;
+    firewall.enable = false;
   };
 
-  # Configure keymap in X11
+  # ============================================================================
+  # LOCALIZATION
+  # ============================================================================
+  
+  # Timezone
+  time.timeZone = "Europe/London";
+  
+  # Locale settings
+  i18n = {
+    defaultLocale = "en_GB.UTF-8";
+    
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_GB.UTF-8";
+      LC_IDENTIFICATION = "en_GB.UTF-8";
+      LC_MEASUREMENT = "en_GB.UTF-8";
+      LC_MONETARY = "en_GB.UTF-8";
+      LC_NAME = "en_GB.UTF-8";
+      LC_NUMERIC = "en_GB.UTF-8";
+      LC_PAPER = "en_GB.UTF-8";
+      LC_TELEPHONE = "en_GB.UTF-8";
+      LC_TIME = "en_GB.UTF-8";
+    };
+  };
+
+  # ============================================================================
+  # INPUT CONFIGURATION
+  # ============================================================================
+  
+  # X11 keymap
   services.xserver.xkb = {
     layout = "gb";
     variant = "";
   };
-
-  # Configure console keymap
+  
+  # Console keymap
   console.keyMap = "uk";
 
-
-
-	# GLOBAL AND USER CONFIGURATION
-
-  # Greetd
+  # ============================================================================
+  # DISPLAY MANAGER & WINDOW MANAGER
+  # ============================================================================
+  
+  # Greetd display manager with auto-login
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${pkgs.niri}/bin/niri-session";
-        user = "greeter";
+        command = "${pkgs.niri}/bin/niri-session";
+        user = "juso";
       };
     };
   };
-
-  # Wayland
+  
+  # Enable niri window manager
+  programs.niri.enable = true;
+  
+  # Wayland environment variables
   environment.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
   };
-  programs.niri.enable = true;
-  # security.polkit.enable = true;
-  # services.dbus.enable = true;
- 
- # zsh
-  programs.zsh.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # ============================================================================
+  # FILE MANAGEMENT & USB AUTOMOUNTING
+  # ============================================================================
+  
+  # Enable USB automounting services
+  services = {
+    devmon.enable = true;
+    gvfs.enable = true;
+    tumbler.enable = true;
+    udisks2.enable = true;
+  };
+  
+  # Thunar file manager with plugins
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs; [
+      thunar-archive-plugin
+      thunar-media-tags-plugin
+      thunar-volman
+    ];
+  };
+
+  # ============================================================================
+  # AUDIO
+  # ============================================================================
+  
+  security.rtkit.enable = true;
+  
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # ============================================================================
+  # USER ACCOUNTS
+  # ============================================================================
+  
   users.users.juso = {
     isNormalUser = true;
     description = "Geordie Mac";
@@ -106,65 +165,54 @@
     packages = with pkgs; [];
   };
 
+  # ============================================================================
+  # SYSTEM-WIDE PROGRAMS
+  # ============================================================================
+  
+  programs = {
+    # Enable zsh system-wide
+    zsh.enable = true;
+    
+    # Network diagnostics
+    mtr.enable = true;
+    
+    # GPG agent
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+  };
+
+  # ============================================================================
+  # SYSTEM PACKAGES
+  # ============================================================================
+  
+  environment.systemPackages = with pkgs; [
+    git
+    niri
+    vim
+    wget
+  ];
+  
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    git
-    niri
-  ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
+  # ============================================================================
+  # SERVICES
+  # ============================================================================
+  
+  # Enable OpenSSH daemon
   services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
-
-  # USB automounting and file management
-  services.gvfs.enable = true;
-  services.udisks2.enable = true;
-  services.devmon.enable = true;
-
-  # Thunar with all the extras
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-volman
-      thunar-archive-plugin
-      thunar-media-tags-plugin
-    ]; 
-  };
-
-  # Thumbnail support
-  services.tumbler.enable = true;
-
-	# DO NOT TOUCH
-
-
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
-
+  # ============================================================================
+  # SYSTEM VERSION
+  # ============================================================================
+  # DO NOT CHANGE - This value determines the NixOS release from which the
+  # default settings for stateful data, like file locations and database
+  # versions, were taken. It's perfectly fine and recommended to leave this
+  # value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option.
+  # ============================================================================
+  
+  system.stateVersion = "25.11";
 }

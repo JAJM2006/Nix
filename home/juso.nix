@@ -1,135 +1,174 @@
 { config, pkgs, ... }:
 
 {
+  # ============================================================================
+  # USER INFORMATION
+  # ============================================================================
+  
   home.username = "juso";
   home.homeDirectory = "/home/juso";
   home.stateVersion = "25.11";
 
-  # User packages
+  # ============================================================================
+  # PACKAGES
+  # ============================================================================
+  
   home.packages = with pkgs; [
-    tree
-    cmus
-    htop
-    neofetch
-    neovim
-    ripgrep
-    fd
-    bat
-    tmux
-    direnv
-    eza
-    starship
-    alacritty
-    rofi
-    waybar
-    dunst
-    grim
-    slurp
-    brightnessctl
-    playerctl
-    nerd-fonts.fira-code
-    cliphist
-    wl-clipboard
-    bibata-cursors
-    pavucontrol  # Volume control GUI
-    networkmanager_dmenu  # Network manager GUI
-    papirus-icon-theme  # Icons for rofi
-    swww 
-    nnn  # Minimal terminal file manager
-    yazi  # Modern terminal file manager with image preview
-    satty
-    wf-recorder
-    fuzzel
-    zoxide
-    lazygit
-    file-roller
-    udiskie
+    # --------------------------------------------------------------------------
+    # System Utilities
+    # --------------------------------------------------------------------------
+    bat                    # Cat clone with syntax highlighting
+    brightnessctl          # Brightness control
+    direnv                 # Directory-specific environments
+    eza                    # Modern ls replacement
+    fd                     # Modern find replacement
+    htop                   # Interactive process viewer
+    neofetch               # System information tool
+    playerctl              # Media player controller
+    ripgrep                # Fast grep alternative
+    tree                   # Directory tree viewer
+    
+    # --------------------------------------------------------------------------
+    # Terminal & Shell
+    # --------------------------------------------------------------------------
+    alacritty              # GPU-accelerated terminal emulator
+    starship               # Cross-shell prompt
+    tmux                   # Terminal multiplexer
+    
+    # --------------------------------------------------------------------------
+    # Text Editors
+    # --------------------------------------------------------------------------
+    neovim                 # Vim-based text editor
+    
+    # --------------------------------------------------------------------------
+    # Media
+    # --------------------------------------------------------------------------
+    cmus                   # Console music player
+    
+    # --------------------------------------------------------------------------
+    # Desktop Environment
+    # --------------------------------------------------------------------------
+    cliphist               # Clipboard history manager
+    dunst                  # Notification daemon
+    grim                   # Screenshot utility
+    rofi                   # Application launcher
+    slurp                  # Region selector for screenshots
+    waybar                 # Status bar
+    wl-clipboard           # Wayland clipboard utilities
+    
+    # --------------------------------------------------------------------------
+    # File Management
+    # --------------------------------------------------------------------------
+    file-roller            # Archive manager
+    pavucontrol            # PulseAudio volume control
+    
+    # --------------------------------------------------------------------------
+    # Themes & Fonts
+    # --------------------------------------------------------------------------
+    bibata-cursors         # Cursor theme
+    nerd-fonts.fira-code   # Nerd Fonts patched FiraCode
+    papirus-icon-theme     # Icon theme
   ];
 
-  # Config file symlinks
-  home.file.".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Settings/config/niri";
-  home.file.".config/waybar".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Settings/config/waybar";
-  home.file.".config/dunst".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Settings/config/dunst";
-  home.file.".config/rofi".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Settings/config/rofi";
-  home.file.".config/alacritty".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Settings/config/alacritty";
-  home.file.".config/starship".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Settings/config/starship";
-
-  programs.starship = {
-  enable = true;
-  enableZshIntegration = true;
+  # ============================================================================
+  # CONFIGURATION FILES
+  # ============================================================================
+  
+  home.file = {
+    ".config/alacritty".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/alacritty";
+    
+    ".config/dunst".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/dunst";
+    
+    ".config/niri".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/niri";
+    
+    ".config/rofi".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/rofi";
+    
+    ".config/starship".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/starship";
+    
+    ".config/waybar".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/waybar";
   };
 
+  # ============================================================================
+  # PROGRAMS - MANAGED BY HOME MANAGER
+  # ============================================================================
+  
+  # ----------------------------------------------------------------------------
+  # System Monitoring
+  # ----------------------------------------------------------------------------
   programs.btop.enable = true;
+  
+  # ----------------------------------------------------------------------------
+  # Fuzzy Finder
+  # ----------------------------------------------------------------------------
   programs.fzf.enable = true;
   
-  programs.firefox = {
-  enable = true;
-  profiles.juso = {
-    id = 0;
-    name = "juso";
-    isDefault = true;
-    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-      ublock-origin
-      # tokyo-night theme extensions
-    ];
-  };
-};
-
+  # ----------------------------------------------------------------------------
+  # Shell Configuration
+  # ----------------------------------------------------------------------------
   programs.zsh = {
     enable = true;
     initContent = ''
+      # Path configuration
       export PATH=$HOME/Settings/scripts:$PATH
+      
+      # Editor configuration
       export EDITOR=nvim
       export VISUAL=nvim
+      
+      # Git workflow functions
+      gpdev() {
+        git add -A && git commit -m "$1" && git push origin dev
+      }
+      
+      gpmain() {
+        git add -A && git commit -m "$1" && git push origin main
+      }
+      
+      # Quick status check
+      alias gs='git status'
     '';
   };
   
+  # ----------------------------------------------------------------------------
+  # Git Configuration
+  # ----------------------------------------------------------------------------
   programs.git = {
     enable = true;
-    userName = "Geordie Mac";
-    userEmail = "Git@JAJM2006.uk";
-  };
-
-  # GTK
-  gtk = {
-    enable = true;
-    theme = {
-      name = "Tokyonight-Dark-BL";
-      package = pkgs.tokyonight-gtk-theme;
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    cursorTheme = {
-      name = "Bibata-Modern-Ice";
-      package = pkgs.bibata-cursors;
-    };
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+    
+    settings = {
+      user = {
+        name = "Geordie Mac";
+        email = "Joshua.McManus2006@gmail.com";
+      };
+      
+      alias = {
+        # Quick operations
+        st = "status";
+        co = "checkout";
+        br = "branch";
+        cm = "commit -m";
+        cdev = "checkout dev";
+        cmain = "checkout main";
+        
+        # Advanced
+        last = "log -1 HEAD";
+        unstage = "reset HEAD --";
+        amend = "commit --amend --no-edit";
+      };
     };
   };
-
-
-programs = {
-  zoxide.enable = true;
-  zoxide.enableZshIntegration = true;
   
-  eza = {
+  # ----------------------------------------------------------------------------
+  # Starship Prompt
+  # ----------------------------------------------------------------------------
+  programs.starship = {
     enable = true;
     enableZshIntegration = true;
-    git = true;
-    icons = "auto";
   };
-  
-  bat = {
-    enable = true;
-    config.theme = "TwoDark";
-  };
-};
-
 }
-
