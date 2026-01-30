@@ -72,6 +72,7 @@
     rofi                   # Application launcher
     slurp                  # Region selector for screenshots
     swww		   # Wallpaper daemom (wayland)
+    tor-browser		   # The Onion Router
     waybar                 # Status bar
     wl-clipboard           # Wayland clipboard utilities
     
@@ -114,6 +115,20 @@
 
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink 
       "${config.home.homeDirectory}/Settings/config/nvim";
+
+    ".local/share/applications/steam-gamescope.desktop".text = ''
+      [Desktop Entry]
+      Name=Steam (Gamescope)
+      Comment=Application for managing and playing games on Steam
+      Exec=gamescope -- steam %U
+      Icon=steam
+      Terminal=false
+      Type=Application
+      Categories=Network;FileTransfer;Game;
+      MimeType=x-scheme-handler/steam;x-scheme-handler/steamlink;
+      PrefersNonDefaultGPU=true
+      X-KDE-RunOnDiscreteGpu=true
+    '';
   };
 
   # ============================================================================

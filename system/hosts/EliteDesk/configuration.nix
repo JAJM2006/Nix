@@ -116,6 +116,12 @@
   environment.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
+    XDG_CURRENT_DESKTOP = "niri";
+    XDG_SESSION_TYPE = "wayland";
+    NIXOS_OZONE_WL = "1";
+    
+    # Force Steam to use SDL Wayland backend
+    SDL_VIDEODRIVER = "wayland";
   };
 
   # ============================================================================
@@ -161,6 +167,7 @@
     enable = true;
     remotePlay.openFirewall = true;  # Open ports for Steam Remote Play
     dedicatedServer.openFirewall = true;  # Open ports for Source Dedicated Server
+    gamescopeSession.enable = true;
   };
   
   # Enable GameMode for performance optimization
@@ -193,6 +200,24 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
+    };
+  };
+
+  # ============================================================================
+  # PRIVACY & SECURITY
+  # ============================================================================
+  
+  services.tor = {
+    enable = true;
+    client.enable = true;
+    
+    # Optional: configure Tor settings
+    settings = {
+      # SOCKS proxy on localhost:9050
+      SOCKSPort = [ 9050 ];
+      
+      # Control port (for tools like Nyx)
+      ControlPort = [ 9051 ];
     };
   };
 
