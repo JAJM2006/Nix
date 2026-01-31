@@ -7,7 +7,7 @@ Backup/
 
 # Secrets
 system/secrets/*
-!secrets/.gitkeep
+!system/secrets/.gitkeep
 
 # Backup files and editor temps
 *.bak
