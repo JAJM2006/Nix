@@ -152,20 +152,20 @@
   
   security.rtkit.enable = true;
 
-services.mpd = {
-  enable = true;
-  user = "juso";
-  musicDirectory = "/home/juso/Music";
-  startWhenNeeded = false;
+  services.mpd = {
+    enable = true;
+    user = "juso";
+    musicDirectory = "/home/juso/Music";
+    startWhenNeeded = false;
   
   # Use settings instead of extraConfig
-  settings = {
-    audio_output = {
-      type = "pipewire";
-      name = "PipeWire Sound Server";
+    settings = {
+      audio_output = {
+        type = "pipewire";
+        name = "PipeWire Sound Server";
+      };
     };
   };
-  
   services.pipewire = {
     enable = true;
     alsa.enable = true;
