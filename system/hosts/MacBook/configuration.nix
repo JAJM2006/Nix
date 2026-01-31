@@ -4,15 +4,14 @@
 # This is the main system configuration file for macOS using nix-darwin.
 # Documentation: https://github.com/LnL7/nix-darwin
 # ==============================================================================
-nix.enable = false;
-# ==============================================================================
 { config, pkgs, ... }:
 
 {
   # ============================================================================
   # NIX CONFIGURATION
   # ============================================================================
-  
+  nix.enable = false;
+
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
   };
