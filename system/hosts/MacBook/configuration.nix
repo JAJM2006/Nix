@@ -1,10 +1,11 @@
 # ==============================================================================
-# JAJM2006's  NIX-DARWIN SYSTEM CONFIGURATION - MacBook
+# JAJM2006's  DETERMINATE NIX SYSTEM CONFIGURATION - MacBook
 # ==============================================================================
 # This is the main system configuration file for macOS using nix-darwin.
 # Documentation: https://github.com/LnL7/nix-darwin
 # ==============================================================================
-
+nix.enable = false;
+# ==============================================================================
 { config, pkgs, ... }:
 
 {
