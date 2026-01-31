@@ -29,9 +29,10 @@
   
   home.packages = with pkgs; [
     # Examples:
-    # yabai                # Tiling window manager
-    # skhd                 # Hotkey daemon
-    # sketchybar           # Status bar
+      yabai                # Tiling window manager
+      skhd                 # Hotkey daemon
+      sketchybar           # Status bar
+      alacritty
   ];
 
   # ============================================================================
