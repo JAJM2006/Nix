@@ -542,7 +542,7 @@
             "showBackground": true,
             "useCustomFont": false,
             "usePrimaryColor": false,
-            "x": 20,
+            "x": 1680,
             "y": 60
           },
           {
@@ -565,14 +565,14 @@
             "scale": 0.849574080846018,
             "showBackground": true,
             "statType": "CPU",
-            "x": 1700,
-            "y": 180
+            "x": 20,
+            "y": 160
           },
           {
             "id": "Weather",
             "scale": 1,
             "showBackground": true,
-            "x": 1640,
+            "x": 20,
             "y": 60
           }
         ]
