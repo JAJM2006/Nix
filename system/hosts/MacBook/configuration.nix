@@ -101,6 +101,32 @@
     stateVersion = 5;
   };
 
+
+
+	system.activationScripts.applications.text = lib.mkForce ''
+	  echo "setting up /Applications/Nix Apps..." >&2
+  
+	  # Clean up old symlinks
+	  rm -rf "/Applications/Nix Apps"
+ 	 mkdir -p "/Applications/Nix Apps"
+  
+	  # Create symlinks for all .app bundles in user profile
+ 	 find ${config.system.build.applications}/Applications -maxdepth 1 -name '*.app' -type l -exec sh -c '
+	    src="$1"
+	    app_name=$(basename "$src")
+	    ln -sf "$src" "/Applications/Nix Apps/$app_name"
+	  ' sh {} \;
+  
+	  # Also link from home-manager profile
+	  if [ -d "/etc/profiles/per-user/joshuamcmanus/Applications" ]; then
+	    find /etc/profiles/per-user/joshuamcmanus/Applications -maxdepth 1 -name '*.app' -type l -exec sh -c '
+	      src="$1"
+	      app_name=$(basename "$src")
+	      ln -sf "$src" "/Applications/Nix Apps/$app_name"
+	    ' sh {} \;
+	  fi
+	'';
+
   # ============================================================================
   # PROGRAMS
   # ============================================================================

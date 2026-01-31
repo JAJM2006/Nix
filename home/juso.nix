@@ -36,7 +36,8 @@
     firefox                # Web browser
     nix-output-monitor     # Output monitoring
     playerctl              # Media player controller
-    
+    eza			   # Shell tool    
+
     # --------------------------------------------------------------------------
     # Desktop Environment (Wayland)
     # --------------------------------------------------------------------------
@@ -118,6 +119,11 @@
       # Case-insensitive completion
       zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
       
+      # Eza
+      alias ls='eza --icons'
+      alias ll='eza -la --icons'
+      alias cat='bat'
+
       # Wallpaper functions (Wayland)
       wall() {
         swww img "$1" --transition-type wipe --transition-angle 30
