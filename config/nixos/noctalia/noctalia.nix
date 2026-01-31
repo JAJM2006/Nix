@@ -1,7 +1,8 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   programs.noctalia-shell = {
     enable = true;
-    settings = "${config.home.homeDirectory}/Settings/config/nixos/noctalia/settings.json";
+    settings = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/nixos/noctalia/settings.json";
   };
 }
