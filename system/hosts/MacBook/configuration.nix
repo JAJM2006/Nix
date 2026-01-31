@@ -39,18 +39,18 @@
   # HOMEBREW
   # ============================================================================
   
-  homebrew = {
-    enable = true;
-    
-    onActivation = {
-      autoUpdate = true;
-      cleanup = "zap";
-      upgrade = true;
-    };
-    
-    brews = [ ];
-    casks = [ ];
-  };
+#  homebrew = {
+#    enable = true;
+#    
+#    onActivation = {
+#      autoUpdate = true;
+#      cleanup = "zap";
+#      upgrade = true;
+#    };
+#    
+#    brews = [ ];
+#    casks = [ ];
+#  };
 
   # ============================================================================
   # MACOS SYSTEM SETTINGS
