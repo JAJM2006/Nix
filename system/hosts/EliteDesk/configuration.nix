@@ -13,7 +13,7 @@
   # ============================================================================
   
   imports = [
-    ./hardware-configuration.nix
+    /home/juso/Settings/system/hosts/EliteDesk/hardware-configuration.nix
   ];
 
   # ============================================================================
