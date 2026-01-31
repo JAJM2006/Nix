@@ -282,6 +282,8 @@ This minimizes duplication while maintaining platform flexibility.
 
 This is a personal configuration, but feel free to fork and adapt for your own use!
 not YET under SPARK License Agreement - Comming soon
+
+
 └── > This means that anyone who uses any of the work in this repo AFTER SLA will have to opensource their repo too. AGAIN, not yet signed. 
 
 ---
