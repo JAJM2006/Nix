@@ -6,7 +6,7 @@ result-*
 Backup/
 
 # Secrets
-secrets/*
+system/secrets/*
 !secrets/.gitkeep
 
 # Backup files and editor temps
