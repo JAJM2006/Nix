@@ -107,10 +107,10 @@
   programs.git = {
     enable = true;
     
-    userName = "Geordie Mac";
-    userEmail = "Joshua.McManus2006@gmail.com";
+    settings.user.name = "Geordie Mac";
+    settings.user.email = "Joshua.McManus2006@gmail.com";
     
-    aliases = {
+    settings.aliases = {
       # Quick operations
       st = "status";
       co = "checkout";
