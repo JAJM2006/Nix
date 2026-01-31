@@ -111,7 +111,7 @@
   # USER CONFIGURATION
   # ============================================================================
   
-  users.users.joshuamcmanus = {  # CHANGED from juso
+  users.users.joshuamcmanus = {
     name = "joshuamcmanus";
     home = "/Users/joshuamcmanus";
     shell = pkgs.zsh;

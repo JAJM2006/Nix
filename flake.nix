@@ -1,3 +1,6 @@
+# ==============================================================================
+# JAJM2006's FLAKE.NIX FOR NIXOS AND NIX-DARWIN
+# =============================================================================
 {
   description = "Joshua's NixOS Configuration Platform";
 
@@ -47,9 +50,11 @@
     # ==========================================================================
     
     nixosConfigurations = {
+     
       # ------------------------------------------------------------------------
       # EliteDesk - Main Desktop Configuration
       # ------------------------------------------------------------------------
+     
       EliteDesk = nixpkgs.lib.nixosSystem {
         system = linuxSystem;
         
@@ -71,6 +76,7 @@
       # ------------------------------------------------------------------------
       # ISO - Bootable Installer with Configuration
       # ------------------------------------------------------------------------
+     
       iso = nixpkgs.lib.nixosSystem {
         system = linuxSystem;
         modules = [ ./iso.nix ];
@@ -82,10 +88,12 @@
     # ==========================================================================
     
     darwinConfigurations = {
+     
       # ------------------------------------------------------------------------
       # MacBook - macOS Configuration
       # ------------------------------------------------------------------------
-      MacBook = darwin.lib.darwinSystem {
+     
+       MacBook = darwin.lib.darwinSystem {
         system = darwinSystem;
         
         modules = [
@@ -97,10 +105,13 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.joshuamcmanus = import ./home/juso-darwin.nix;
+            home-manager.users.joshuamcmanus = import ./home/darwin.nix;
           }
         ];
       };
     };
   };
+# ============================================================================
+# END OF FLAKE.NIX
+# ============================================================================
 }

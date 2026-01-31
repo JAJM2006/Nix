@@ -165,8 +165,8 @@
   
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true;  # Open ports for Steam Remote Play
-    dedicatedServer.openFirewall = true;  # Open ports for Source Dedicated Server
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
     gamescopeSession.enable = true;
   };
   

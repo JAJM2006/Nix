@@ -1,27 +1,19 @@
 # ==============================================================================
-# JAJM2006's  NIX-DARWIN HOME MANAGER CONFIGURATION - MacBook
+# JAJM2006's SHARED HOME MANAGER CONFIGURATION
 # ==============================================================================
-# This is the main system configuration file for macOS using nix-darwin.
-# Documentation: https://github.com/LnL7/nix-darwin
-# ============================================================================== 
-{config, pkgs, ... }:
+# Common configuration shared between NixOS (juso.nix) and macOS (darwin.nix)
+# This extracts all cross-platform packages and settings.
+# ==============================================================================
+{ config, pkgs, ... }:
 
 {
   # ============================================================================
-  # USER INFORMATION
-  # ============================================================================
-  
-  home.username = "joshuamcmanus";
-  home.homeDirectory = "/Users/joshuamcmanus";
-  home.stateVersion = "24.05";
-
-  # ============================================================================
-  # PACKAGES
+  # SHARED PACKAGES
   # ============================================================================
   
   home.packages = with pkgs; [
     # --------------------------------------------------------------------------
-    # System Utilities
+    # System Utilities (Cross-platform)
     # --------------------------------------------------------------------------
     bat                    # Cat clone with syntax highlighting
     direnv                 # Directory-specific environments
@@ -31,6 +23,7 @@
     neofetch               # System information tool
     ripgrep                # Fast grep alternative
     tree                   # Directory tree viewer
+    gum                    # Shell scripting
     
     # --------------------------------------------------------------------------
     # Terminal & Shell
@@ -40,35 +33,34 @@
     tmux                   # Terminal multiplexer
     
     # --------------------------------------------------------------------------
-    # Text Editors
-    # --------------------------------------------------------------------------
-    neovim                 # Vim-based text editor
-    
-    # --------------------------------------------------------------------------
     # Media
     # --------------------------------------------------------------------------
     cmus                   # Console music player
     
     # --------------------------------------------------------------------------
-    # Fonts (if not using system fonts)
+    # Fonts
     # --------------------------------------------------------------------------
     nerd-fonts.fira-code   # Nerd Fonts patched FiraCode
   ];
 
   # ============================================================================
-  # CONFIGURATION FILES
+  # SHARED CONFIGURATION FILES
   # ============================================================================
   
   home.file = {
+    # Cross-platform configs
     ".config/alacritty".source = config.lib.file.mkOutOfStoreSymlink 
-      "${config.home.homeDirectory}/Settings/config/alacritty";
+      "${config.home.homeDirectory}/Settings/config/common/alacritty";
     
     ".config/starship".source = config.lib.file.mkOutOfStoreSymlink 
-      "${config.home.homeDirectory}/Settings/config/starship";
+      "${config.home.homeDirectory}/Settings/config/common/starship";
+
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink 
+      "${config.home.homeDirectory}/Settings/config/common/nvim";
   };
 
   # ============================================================================
-  # PROGRAMS - MANAGED BY HOME MANAGER
+  # SHARED PROGRAMS
   # ============================================================================
   
   # ----------------------------------------------------------------------------
@@ -82,15 +74,15 @@
   programs.fzf.enable = true;
   
   # ----------------------------------------------------------------------------
-  # Shell Configuration
+  # Shell Configuration (Common parts)
   # ----------------------------------------------------------------------------
   programs.zsh = {
     enable = true;
+    
     initContent = ''
       # Path configuration
       export PATH=$HOME/Settings/scripts:$PATH
-      export PATH=$HOME/.nix-profile/bin:$PATH
-
+      
       # Editor configuration
       export EDITOR=nvim
       export VISUAL=nvim
@@ -106,11 +98,6 @@
       
       # Quick status check
       alias gs='git status'
-      
-      # macOS-specific aliases
-      alias ls='eza --icons'
-      alias ll='eza -la --icons'
-      alias cat='bat'
     '';
   };
   
@@ -118,23 +105,48 @@
   # Git Configuration
   # ----------------------------------------------------------------------------
   programs.git = {
-  enable = true;
-  userName = "Geordie Mac";
-  userEmail = "Joshua.McManus2006@gmail.com";
-  
-  aliases = {
-    st = "status";
-    co = "checkout";
-    br = "branch";
-    cm = "commit -m";
-    cdev = "checkout dev";
-    cmain = "checkout main";
-    last = "log -1 HEAD";
-    unstage = "reset HEAD --";
-    amend = "commit --amend --no-edit";
+    enable = true;
+    
+    userName = "Geordie Mac";
+    userEmail = "Joshua.McManus2006@gmail.com";
+    
+    aliases = {
+      # Quick operations
+      st = "status";
+      co = "checkout";
+      br = "branch";
+      cm = "commit -m";
+      cdev = "checkout dev";
+      cmain = "checkout main";
+      
+      # Advanced
+      last = "log -1 HEAD";
+      unstage = "reset HEAD --";
+      amend = "commit --amend --no-edit";
     };
   };
-  
+
+  # ----------------------------------------------------------------------------
+  # Neovim (shared LSPs and tools)
+  # ----------------------------------------------------------------------------
+  programs.neovim = {
+    enable = true;
+    defaultEditor = false;
+
+    extraPackages = with pkgs; [
+      ripgrep
+      fd
+      gcc
+      gnumake
+      unzip
+      
+      # LSPs & Formatters
+      lua-language-server
+      stylua
+      nixd
+    ];
+  };
+
   # ----------------------------------------------------------------------------
   # Starship Prompt
   # ----------------------------------------------------------------------------
@@ -142,4 +154,8 @@
     enable = true;
     enableZshIntegration = true;
   };
+
+# ============================================================================
+# END OF HOME/COMMON.NIX
+# ============================================================================
 }
