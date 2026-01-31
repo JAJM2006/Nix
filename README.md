@@ -1,191 +1,290 @@
-# NixOS Configuration 🎨
+# JAJM2006's Nix Configuration
 
-My personal NixOS configuration featuring niri scrollable-tiling window manager with Tokyo Night theming.
+A unified, cross-platform configuration system for NixOS and macOS using Nix flakes, nix-darwin, and home-manager.
 
-## 🌟 Features
+## 🖥️ Machines
 
-- **Window Manager**: [niri](https://github.com/YaLTeR/niri) - A scrollable-tiling Wayland compositor
-- **Theme**: Tokyo Night across all applications
-- **Display Manager**: greetd with auto-login
-- **Status Bar**: Waybar with system monitoring
-- **Launcher**: Rofi
-- **Terminal**: Alacritty
-- **Notifications**: Dunst
-- **Shell**: Zsh with Starship prompt
+- **EliteDesk** - NixOS desktop (x86_64-linux)
+- **MacBook** - macOS laptop (aarch64-darwin)
 
-## 📦 Installation
-
-### Fresh Install
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/nixos-config ~/Settings
-cd ~/Settings
-
-# Copy your hardware configuration
-sudo cp /etc/nixos/hardware-configuration.nix ~/Settings/system/hosts/YourHostname/
-
-# Update flake.nix with your hostname
-# Then build
-sudo nixos-rebuild switch --flake .#YourHostname
-```
-
-### Updating
-
-```bash
-# Using the rebuild script
-~/Settings/scripts/rebuild
-
-# Or manually
-cd ~/Settings
-sudo nixos-rebuild switch --flake .#EliteDesk
-```
-
-## 🖥️ Hosts
-
-- **EliteDesk** - Main desktop configuration
-
-## ⌨️ Keybindings
-
-### Window Management
-| Keybind | Action |
-|---------|--------|
-| `Mod + Return` | Launch terminal (Alacritty) |
-| `Mod + D` | Application launcher (Rofi) |
-| `Mod + Q` | Close focused window |
-| `Mod + H/L` | Focus left/right column |
-| `Mod + J/K` | Focus up/down window |
-| `Mod + Shift + H/J/K/L` | Move window |
-| `Mod + F` | Maximize column |
-| `Mod + Shift + F` | Fullscreen window |
-| `Mod + Space` | Toggle floating |
-
-### Workspaces
-| Keybind | Action |
-|---------|--------|
-| `Mod + Ctrl + Up/Down` | Switch workspace |
-| `Mod + Shift + Ctrl + J/K` | Move window to workspace |
-
-### Column Width
-| Keybind | Action |
-|---------|--------|
-| `Mod + 1/2/3/4` | Set column width (25%/50%/75%/100%) |
-| `Mod + S` | Switch preset widths |
-| `Mod + -/+` | Decrease/increase width by 10% |
-
-### System
-| Keybind | Action |
-|---------|--------|
-| `Print` | Screenshot screen |
-| `Mod + Shift + S` | Screenshot selection |
-| `Mod + Shift + Alt + S` | Screenshot window |
-| `Mod + Shift + E` | Quit niri |
-| `XF86Audio*` | Media controls |
-| `XF86MonBrightness*` | Brightness controls |
-
-## 📁 Structure
+## 📁 Repository Structure
 
 ```
 Settings/
-├── config/              # Application configurations
-│   ├── alacritty/      # Terminal config
-│   ├── dunst/          # Notification daemon
-│   ├── niri/           # Window manager
-│   ├── rofi/           # Application launcher
-│   ├── starship/       # Shell prompt
-│   └── waybar/         # Status bar
-├── home/               # Home-manager user config
-│   └── juso.nix
-├── system/             # NixOS system configuration
-│   └── hosts/
-│       └── EliteDesk/
-├── scripts/            # Utility scripts
-│   ├── rebuild        # System rebuild script
-│   └── screenshot     # Screenshot helper
-├── modules/            # Future modular configs
-├── secrets/            # Private configs (gitignored)
-├── flake.nix          # Nix flake configuration
-└── flake.lock         # Flake lock file
+├── config/
+│   ├── common/                               # Cross-platform configurations
+│   │   ├── alacritty/                        # Terminal emulator
+│   │   ├── nvim/                             # Neovim (LazyVim)
+│   │   └── starship/                         # Shell prompt
+│   ├── darwin/                               # macOS-specific configurations
+│   │   └── (empty)                           # Nowt here ATM.
+│   └── nixos/                                # Linux-specific configurations
+│       ├── dunst/                            # Notification daemon
+│       ├── niri/                             # Wayland compositor
+│       ├── noctalia/                         # Noctalia shell
+│       ├── rofi/                             # Application launcher
+│       └── waybar/                           # Status bar
+│
+├── home/
+│   ├── common.nix                            # Shared home-manager config
+│   ├── darwin.nix                            # macOS home-manager (imports common.nix)
+│   └── juso.nix                              # NixOS home-manager (imports common.nix)
+│
+├── scripts/
+│   ├── rebuild                               # Rebuild NixOS
+│   ├── rdarwin                               # Rebuild macOS
+│   ├── maintain                              # Maintenance tasks
+│   ├── screenshot                            # Screenshot utility
+│   ├── wallpaper-rotate                      # Wallpaper rotation
+│   └── wallpaper-selector                    # Wallpaper selection
+│
+├── system/
+│   ├── hosts/          
+│   │   ├── EliteDesk/
+│   │   │   ├── configuration.nix            # NixOS software config file for EliteDesk
+│   │   │   └── hardware-configuration.nix   # NixOS hardware config file for EliteDesk
+│   │   └── MacBook/    
+│   │       └── configuration.nix            # Nix-Darwin software config file for MacBook
+│   └── secrets/          
+│       └── (empty)                          # Nowt here ATM.
+│
+├── flake.nix                                # Main flake configuration
+└── flake.lock                               # lockfile
 ```
 
-## 🎨 Tokyo Night Color Palette
+## 🎯 Features
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Background | `#1a1b26` | Main background |
-| Foreground | `#c0caf5` | Main text |
-| Blue | `#7aa2f7` | Accents, focused |
-| Cyan | `#7dcfff` | Info, highlights |
-| Green | `#9ece6a` | Success |
-| Red | `#f7768e` | Errors, critical |
-| Purple | `#bb9af7` | Special |
-| Yellow | `#e0af68` | Warnings |
+### Common Features on Both Platforms
+- **Shell**: Zsh with Starship prompt
+- **Editor**: Neovim with LazyVim configuration
+- **Terminal**: Alacritty with custom config
+- **Git**: Unified configuration with custom aliases
+- **Tools**: bat, eza, fd, ripgrep, htop, tmux, fzf, btop
 
-## 🔧 Configuration
+### NixOS-Specific (EliteDesk)
+- **Window Manager**: Niri (Wayland compositor)
+- **Desktop**: Waybar, Rofi, Dunst
+- **Gaming**: Steam with Gamescope, GameMode, MangoHud
+- **Display Manager**: Greetd with tuigreet
+- **File Manager**: Thunar with plugins
+- **Privacy**: Tor daemon
 
-### Adding a New Host
+### macOS-Specific (MacBook)
+- **System Defaults**: Dock, Finder, keyboard settings
+- **Package Manager**: Homebrew integration
+- **Trackpad**: Tap to click, three-finger drag
+- **Keyboard**: Caps Lock → Control remapping
 
-1. Create new host directory:
-   ```bash
-   mkdir -p ~/Settings/system/hosts/NewHost
-   ```
+## 🚀 Quick Start
 
-2. Copy hardware configuration:
-   ```bash
-   sudo cp /etc/nixos/hardware-configuration.nix ~/Settings/system/hosts/NewHost/
-   ```
+### First Time Setup
 
-3. Create or copy `configuration.nix` for the new host
+#### NixOS (EliteDesk) - Use any install ISO you wish.
+```bash
+# Clone the repository
+git clone https://github.com/JAJM2006/Nix ~/Settings
+cd ~/Settings
 
-4. Update `flake.nix` to include the new host
+# Build and activate
+sudo nixos-rebuild switch --flake .#EliteDesk
+```
 
-### Customizing
+#### macOS (MacBook) - Install Nix-Darwin.
+```bash
+# Clone the repository
+git clone https://github.com/JAJM20006/Nix ~/Settings
+cd ~/Settings
 
-- **Colors**: Edit the color values in `config/waybar/style.css`, `config/rofi/config.rasi`, etc.
-- **Keybindings**: Modify `config/niri/config.kdl`
-- **System packages**: Edit `system/hosts/EliteDesk/configuration.nix`
-- **User packages**: Edit `home/juso.nix`
+# Install nix-darwin (first time only)
+nix run nix-darwin -- switch --flake ~/Settings#MacBook
 
-## 🚀 Installed Packages
+# Subsequent rebuilds use the script
+./scripts/rdarwin
+```
 
-### System Tools
-- neovim, git, wget, tree
-- htop, btop, neofetch
-- ripgrep, fd, bat, fzf
-- tmux, direnv, eza
+### Daily Usage - GO TO "~/Settings/scripts" AND "Chmod +x"
 
-### Desktop Environment
-- niri, waybar, rofi, dunst
-- alacritty, grim, slurp
-- brightnessctl, playerctl
-- wl-clipboard, cliphist
+#### On NixOS
+```bash
+cd ~/Settings
+rebuild
+```
 
-### Fonts
-- FiraCode Nerd Font
+#### On macOS
+```bash
+cd ~/Settings
+rdarwin
+```
 
-### Themes
-- Bibata Cursors
-- Papirus Icons
+## 📝 Making Changes
 
-## 📝 Notes
+### Adding Packages
 
-- Hardware configuration is machine-specific and excluded from git
-- Uses NixOS unstable channel for latest packages
-- Flakes enabled for reproducible builds
-- Auto-login configured via greetd
+**For both platforms** (edit `home/common.nix`):
+```nix
+home.packages = with pkgs; [
+  neovim
+  alacritty
+  your-new-package  # Add here
+];
+```
 
-## 🙏 Acknowledgments
+**For NixOS only** (edit `home/juso.nix`):
+```nix
+home.packages = with pkgs; [
+  your-linux-package  # Add here
+];
+```
 
-- [Tokyo Night Theme](https://github.com/tokyo-night/tokyo-night-vscode-theme)
-- [niri Window Manager](https://github.com/YaLTeR/niri)
-- [NixOS](https://nixos.org/)
-- [Home Manager](https://github.com/nix-community/home-manager)
+**For macOS only** (edit `home/darwin.nix`):
+```nix
+home.packages = with pkgs; [
+  your-macos-package  # Add here
+];
+```
 
-## 📄 License
+### Modifying Configurations
 
-This configuration is provided as-is for personal use and learning purposes.
+All configuration files are symlinked from `~/Settings/config/`:
+
+```bash
+# Edit configs directly in the repo
+nvim ~/Settings/config/common/nvim/init.lua
+nvim ~/Settings/config/nixos/niri/config.kdl
+
+# Changes apply immediately (configs are symlinked)
+# Rebuild to update packages/system settings
+rebuild (NixOS) OR rdarwin (MacOS)
+```
+
+### System-Level Changes
+
+**NixOS**: Edit `system/hosts/EliteDesk/configuration.nix`
+**macOS**: Edit `system/hosts/MacBook/configuration.nix`
+
+Then rebuild.
+
+## 🔄 Syncing Between Machines
+
+```bash
+# On EliteDesk (after making changes)
+cd ~/Settings
+git add -A
+git commit -m "Update configs"
+git push origin main
+
+# On MacBook
+cd ~/Settings
+git pull origin main
+rdarwin
+```
+
+## 🛠️ Maintenance
+
+### Update System Packages
+```bash
+cd ~/Settings
+./scripts/maintain
+```
+
+### Garbage Collection
+```bash
+# NixOS
+sudo nix-collect-garbage -d
+
+# macOS (runs automatically weekly)
+nix-collect-garbage -d
+```
+
+### Update Flake Inputs
+```bash
+cd ~/Settings
+nix flake update
+./scripts/rebuild  # or ./scripts/rdarwin
+```
+
+## 📦 Key Packages
+
+### Development
+- **Neovim**: LazyVim with LSPs (nixd, lua-language-server, stylua)
+- **Git**: Custom aliases (st, co, cm, gpdev, gpmain)
+- **Shell**: Zsh with case-insensitive completion
+
+### System Utilities
+- **Terminal**: Alacritty (GPU-accelerated)
+- **File Tools**: eza (ls), bat (cat), fd (find), ripgrep (grep)
+- **Monitoring**: htop, btop
+- **Multiplexer**: tmux
+- **Search**: fzf
+
+### NixOS Desktop
+- **Compositor**: Niri
+- **Bar**: Waybar
+- **Launcher**: Rofi
+- **Notifications**: Dunst
+- **Screenshots**: Grim + Slurp
+- **Wallpapers**: swww
+- **Clipboard**: wl-clipboard, cliphist
+
+## 🎨 Customization
+
+### Git Workflow Functions
+Custom git functions available in the shell:
+```bash
+gpdev "commit message"   # Add, commit, push to dev branch
+gpmain "commit message"  # Add, commit, push to main branch
+gs                       # Git status (alias)
+```
+
+### Wallpaper Functions (NixOS)
+```bash
+wall path/to/image.jpg   # Set wallpaper with transition
+wallrandom               # Random wallpaper from ~/Pictures/Wallpapers
+```
+
+## 📚 Documentation
+
+- [NixOS Manual](https://nixos.org/manual/nixos/stable/)
+- [nix-darwin Manual](https://daiderd.com/nix-darwin/manual/index.html)
+- [Home Manager Manual](https://nix-community.github.io/home-manager/)
+- [Nix Flakes](https://nixos.wiki/wiki/Flakes)
+
+## 🏗️ Architecture
+
+This configuration uses a **shared base + platform-specific overrides** pattern:
+
+1. **Common Config** (`home/common.nix`): Cross-platform packages and settings
+2. **Platform Configs**: Import common.nix and add platform-specific items
+   - `home/juso.nix`: NixOS-specific
+   - `home/darwin.nix`: macOS-specific
+3. **System Configs**: Platform-specific system settings
+   - `system/hosts/EliteDesk/`: NixOS system configuration
+   - `system/hosts/MacBook/`: nix-darwin system configuration
+
+This minimizes duplication while maintaining platform flexibility.
+
+## 📊 System Information
+
+### EliteDesk (NixOS)
+- **OS**: NixOS 25.11
+- **Kernel**: Latest (linuxPackages_latest)
+- **Display**: Wayland (Niri)
+- **Audio**: PipeWire
+- **Shell**: Zsh with Starship
+
+### MacBook (macOS)
+- **OS**: macOS with nix-darwin
+- **Architecture**: Apple Silicon (aarch64)
+- **Shell**: Zsh with Starship
+- **Package Managers**: Nix + Homebrew
+
+## 🤝 Contributing and License 📄
+
+This is a personal configuration, but feel free to fork and adapt for your own use!
+not YET under SPARK License Agreement - Comming soon
+└── > This means that anyone who uses any of the work in this repo AFTER SLA will have to opensource their repo too. AGAIN, not yet signed. 
 
 ---
 
-**Author**: Geordie Mac  
-**System**: NixOS 25.11
+**Author**: Geordie Mac (JAJM2006)  
+**Last Updated**: January 2026
