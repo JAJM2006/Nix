@@ -53,7 +53,7 @@
   # ZSH
   # ----------------------------------------------------------------------------
   programs.zsh = {
-    initExtra = ''
+    initContent = ''
       # Add Nix packages to PATH (macOS-specific)
       export PATH=$HOME/.nix-profile/bin:$PATH
       
