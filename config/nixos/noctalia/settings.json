@@ -18,6 +18,9 @@
     "outerCorners": true,
     "exclusive": true,
     "hideOnOverview": false,
+    "displayMode": "always_visible",
+    "autoHideDelay": 500,
+    "autoShowDelay": 150,
     "widgets": {
       "left": [
         {
@@ -150,8 +153,8 @@
     "screenOverrides": []
   },
   "general": {
-    "avatarImage": "/home/juso/.face/face.jpg",
-    "dimmerOpacity": 0.2,
+    "avatarImage": "/home/juso/Pictures/Other/profile.jpg",
+    "dimmerOpacity": 0.1,
     "showScreenCorners": false,
     "forceBlackScreenCorners": false,
     "scaleRatio": 1,
@@ -179,8 +182,8 @@
     "allowPasswordWithFprintd": true
   },
   "ui": {
-    "fontDefault": "Sans Serif",
-    "fontFixed": "monospace",
+    "fontDefault": "Liberation Mono",
+    "fontFixed": "Liberation Mono",
     "fontDefaultScale": 1,
     "fontFixedScale": 1,
     "tooltipsEnabled": true,
@@ -191,10 +194,10 @@
     "bluetoothDetailsViewMode": "grid",
     "networkPanelView": "wifi",
     "bluetoothHideUnnamedDevices": false,
-    "boxBorderEnabled": false
+    "boxBorderEnabled": true
   },
   "location": {
-    "name": "London",
+    "name": "Buckinghamshire",
     "weatherEnabled": true,
     "weatherShowEffects": true,
     "useFahrenheit": false,
@@ -203,7 +206,7 @@
     "showCalendarEvents": true,
     "showCalendarWeather": true,
     "analogClockInCalendar": false,
-    "firstDayOfWeek": -1,
+    "firstDayOfWeek": 0,
     "hideWeatherTimezone": false,
     "hideWeatherCityName": false
   },
@@ -275,6 +278,7 @@
     "iconMode": "tabler",
     "showIconBackground": false,
     "enableSettingsSearch": true,
+    "enableWindowsSearch": true,
     "ignoreMouseInput": false,
     "screenshotAnnotationTool": ""
   },
@@ -374,7 +378,7 @@
     "onlySameOutput": true,
     "monitors": [],
     "pinnedApps": [],
-    "colorizeIcons": false,
+    "colorizeIcons": true,
     "pinnedStatic": false,
     "inactiveIndicators": false,
     "deadOpacity": 0.6,
@@ -452,7 +456,7 @@
       "critical": true
     },
     "sounds": {
-      "enabled": false,
+      "enabled": true,
       "volume": 0.5,
       "separateSounds": false,
       "criticalSoundFile": "",
@@ -460,7 +464,7 @@
       "lowSoundFile": "",
       "excludedApps": "discord,firefox,chrome,chromium,edge"
     },
-    "enableMediaToast": false
+    "enableMediaToast": true
   },
   "osd": {
     "enabled": true,
@@ -482,12 +486,12 @@
     "visualizerType": "linear",
     "mprisBlacklist": [],
     "preferredPlayer": "",
-    "volumeFeedback": false
+    "volumeFeedback": true
   },
   "brightness": {
     "brightnessStep": 5,
     "enforceMinimum": true,
-    "enableDdcSupport": false
+    "enableDdcSupport": true
   },
   "colorSchemes": {
     "useWallpaperColors": true,
@@ -524,8 +528,55 @@
     "session": ""
   },
   "desktopWidgets": {
-    "enabled": false,
-    "gridSnap": false,
-    "monitorWidgets": []
+    "enabled": true,
+    "gridSnap": true,
+    "monitorWidgets": [
+      {
+        "name": "DP-1",
+        "widgets": [
+          {
+            "clockStyle": "digital",
+            "format": "HH:mm\\nd MMMM yyyy",
+            "id": "Clock",
+            "scale": 1.4889901191252284,
+            "showBackground": true,
+            "useCustomFont": false,
+            "usePrimaryColor": false,
+            "x": 20,
+            "y": 60
+          },
+          {
+            "hideMode": "visible",
+            "id": "MediaPlayer",
+            "roundedCorners": true,
+            "scale": 1.352411707769483,
+            "showAlbumArt": true,
+            "showBackground": true,
+            "showButtons": true,
+            "showVisualizer": true,
+            "visualizerType": "linear",
+            "x": 700,
+            "y": 60
+          },
+          {
+            "diskPath": "/",
+            "id": "SystemStat",
+            "roundedCorners": true,
+            "scale": 0.849574080846018,
+            "showBackground": true,
+            "statType": "CPU",
+            "x": 1700,
+            "y": 180
+          },
+          {
+            "id": "Weather",
+            "scale": 1,
+            "showBackground": true,
+            "x": 1640,
+            "y": 60
+          }
+        ]
+      }
+    ]
   }
 }
