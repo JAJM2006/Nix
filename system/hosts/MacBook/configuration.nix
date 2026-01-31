@@ -17,7 +17,7 @@
   };
   
   # CHANGED: Use nix.optimise.automatic instead
-  nix.optimise.automatic = true;
+  # nix.optimise.automatic = true;
 
   # ============================================================================
   # SYSTEM PACKAGES
