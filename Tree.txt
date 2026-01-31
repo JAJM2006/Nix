@@ -1,0 +1,66 @@
+
+~
+❯ cd Settings
+
+Settings on  main
+❯ tree
+.
+├── config
+│   ├── alacritty
+│   │   └── alacritty.toml
+│   ├── dunst
+│   │   └── dunstrc
+│   ├── niri
+│   │   └── config.kdl
+│   ├── noctalia
+│   │   └── settings.json
+│   ├── nvim
+│   │   ├── init.lua
+│   │   ├── lazy-lock.json
+│   │   ├── lazyvim.json
+│   │   ├── LICENSE
+│   │   ├── lua
+│   │   │   ├── config
+│   │   │   │   ├── autocmds.lua
+│   │   │   │   ├── keymaps.lua
+│   │   │   │   ├── lazy.lua
+│   │   │   │   └── options.lua
+│   │   │   └── plugins
+│   │   │       └── example.lua
+│   │   ├── README.md
+│   │   └── stylua.toml
+│   ├── README.TXT
+│   ├── rofi
+│   │   └── config.rasi
+│   ├── starship
+│   │   └── starship.toml
+│   └── waybar
+│       ├── config
+│       └── style.css
+├── flake.lock
+├── flake.nix
+├── home
+│   ├── juso-darwin.nix
+│   └── juso.nix
+├── README.md
+├── scripts
+│   ├── maintain
+│   ├── rdarwin
+│   ├── rebuild
+│   ├── screenshot
+│   ├── wallpaper-rotate
+│   └── wallpaper-selector
+├── secrets
+└── system
+    └── hosts
+        ├── EliteDesk
+        │   ├── configuration.nix
+        │   ├── configuration.nix.save
+        │   └── hardware-configuration.nix
+        └── MacBook
+            └── configuration.nix
+
+20 directories, 35 files
+
+Settings on  main
+❯
