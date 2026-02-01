@@ -4,11 +4,9 @@
 // Niri is a scrollable-tiling Wayland compositor
 // Documentation: https://github.com/YaLTeR/niri
 // ==============================================================================
-
 // ==============================================================================
 // INPUT CONFIGURATION
 // ==============================================================================
-
 input {
     keyboard {
         xkb {
@@ -27,35 +25,27 @@ input {
     warp-mouse-to-focus
     workspace-auto-back-and-forth
 }
-
 // ==============================================================================
 // OUTPUT CONFIGURATION
 // ==============================================================================
-
 output "eDP-1" {
     scale 1.0
     position x=0 y=0
 }
-
 // ==============================================================================
 // Enable XWayland for X11 app compatibility
 // ==============================================================================
-
 prefer-no-csd
-
 // ==============================================================================
 // CURSOR CONFIGURATION
 // ==============================================================================
-
 cursor {
     xcursor-size 24
     xcursor-theme "Bibata-Modern-Ice"
 }
-
 // ==============================================================================
 // LAYOUT & APPEARANCE
 // ==============================================================================
-
 layout {
     gaps 16
     
@@ -66,7 +56,6 @@ layout {
         top 5
         bottom 10
     }
-
     border {
         width 2
         active-color "#7aa2f7"      // Tokyo Night blue
@@ -86,11 +75,9 @@ layout {
     
     center-focused-column "never"
 }
-
 // ==============================================================================
 // WINDOW RULE CONFIGURATION
 // ==============================================================================
-
 window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
@@ -98,41 +85,32 @@ window-rule {
     opacity 0.85
     draw-border-with-background false
 }
-
 // ==============================================================================
 // ANIMATIONS
 // ==============================================================================
-
 animations {
     horizontal-view-movement {
         spring stiffness=1000 damping-ratio=1.0 epsilon=0.0001
     }
-
     workspace-switch {
         spring stiffness=1000 damping-ratio=1.0 epsilon=0.0001
     }
-
     window-open {
         duration-ms 250
         curve "ease-out-expo"
     }
-
     window-close {
         duration-ms 200
         curve "ease-out-quad"  // Changed from ease-in-out-cubic
     }
 }
-
 // ==============================================================================
 // SCREENSHOTS
 // ==============================================================================
-
 screenshot-path "~/Pictures/Screenshots/Screenshot-%Y-%m-%d-%H-%M-%S.png"
-
 // ==============================================================================
 // KEYBINDINGS
 // ==============================================================================
-
 binds {
     // --------------------------------------------------------------------------
     // Applications
@@ -219,11 +197,21 @@ binds {
     Mod+Shift+W { spawn "sh" "-c" "swww img $(find ~/Pictures/Wallpapers -type f | shuf -n 1) --transition-type random"; }  // Random wallpaper
     
     // --------------------------------------------------------------------------
-    // Media Keys
+    // Media Keys (MPD Control)
     // --------------------------------------------------------------------------
-    XF86AudioPlay { spawn "playerctl" "play-pause"; }
-    XF86AudioNext { spawn "playerctl" "next"; }
-    XF86AudioPrev { spawn "playerctl" "previous"; }
+    XF86AudioPlay { spawn "mpc" "toggle"; }                // MPD: Play/Pause
+    XF86AudioNext { spawn "mpc" "next"; }                  // MPD: Next track
+    XF86AudioPrev { spawn "mpc" "prev"; }                  // MPD: Previous track
+    XF86AudioStop { spawn "mpc" "stop"; }                  // MPD: Stop
+    
+    // --------------------------------------------------------------------------
+    // MPD Control (Alternative Bindings)
+    // --------------------------------------------------------------------------
+    Mod+P { spawn "mpc" "toggle"; }                        // MPD: Play/Pause
+    Mod+BracketRight { spawn "mpc" "next"; }               // MPD: Next track
+    Mod+BracketLeft { spawn "mpc" "prev"; }                // MPD: Previous track
+    Mod+Shift+P { spawn "mpc" "stop"; }                    // MPD: Stop playback
+    Mod+I { spawn "sh" "-c" "notify-send 'Now Playing' \"$(mpc current)\""; }  // Show current track
     
     // --------------------------------------------------------------------------
     // Volume Control
@@ -244,12 +232,10 @@ binds {
     Mod+Shift+E { quit; }                                  // Quit niri
     Mod+Shift+R { spawn "niri-msg" "action" "reload-config"; }
   }
-
 // ==============================================================================
 // AUTOSTART APPLICATIONS
 // ==============================================================================
-
-spawn-at-startup "noctalia-shell"                // Status bar
+spawn-at-startup "noctalia-shell"                          // Status bar
 spawn-at-startup "dunst"                                   // Notifications
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"   // Clipboard manager
 spawn-at-startup "swww-daemon"                             // Wallpaper daemon
