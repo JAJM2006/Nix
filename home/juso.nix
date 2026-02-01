@@ -37,10 +37,10 @@
     firefox                # Web browser
     nix-output-monitor     # Output monitoring
     playerctl              # Media player controller
-    eza			   # Shell tool    
+    eza                    # Shell tool    
 
     # --------------------------------------------------------------------------
-    # Desktop Environment (Wayland)
+    # Desktop Environment (Wayland - Niri)
     # --------------------------------------------------------------------------
     cliphist               # Clipboard history manager
     dunst                  # Notification daemon
@@ -52,7 +52,33 @@
     tor-browser            # The Onion Router
     waybar                 # Status bar
     wl-clipboard           # Wayland clipboard utilities
+
+    # --------------------------------------------------------------------------
+    # Desktop Environment (KDE Plasma)
+    # --------------------------------------------------------------------------
+
+    # Core KDE Applications
+    kdePackages.kate                    # Text editor
+    kdePackages.konsole                 # Terminal emulator
+    kdePackages.dolphin                 # File manager
     
+    # Graphics & Media
+    kdePackages.gwenview                # Image viewer
+    kdePackages.spectacle               # Screenshot tool
+    
+    # Utilities
+    kdePackages.ark                     # Archive manager
+    kdePackages.kcalc                   # Calculator
+    
+    # System Settings
+    kdePackages.systemsettings          # KDE System Settings
+    
+    # Optional - uncomment if you want these
+    # kdePackages.okular                # Document viewer
+    # kdePackages.kwrite                # Simple text editor
+    # kdePackages.elisa                 # Music player
+    # kdePackages.kdeconnect-kde        # Phone integration
+
     # --------------------------------------------------------------------------
     # File Management
     # --------------------------------------------------------------------------
@@ -96,7 +122,7 @@
       Categories=Network;FileTransfer;Game;
       MimeType=x-scheme-handler/steam;x-scheme-handler/steamlink;
       PrefersNonDefaultGPU=true
-      X-KDE-RunOnDiscreteGpu=true
+      X-KDE-RunOnDiscreteGPU=true
     '';
   };
 
