@@ -1,3 +1,6 @@
+[general]
+import = ["~/.config/alacritty/themes/noctalia.toml"]
+
 [window]
 padding.x = 10
 padding.y = 10
