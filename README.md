@@ -81,6 +81,7 @@ Settings/
 
 #### NixOS (EliteDesk) - Use any install ISO you wish.
 ```bash
+nix-shell -p git
 # Clone the repository
 git clone https://github.com/JAJM2006/Nix ~/Settings
 cd ~/Settings
