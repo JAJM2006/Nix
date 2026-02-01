@@ -132,7 +132,7 @@
     mpd = {
       enable = true;
       user = "juso";
-      startWhenNeeded = true;
+      startWhenNeeded = false;
   
       settings = {
         music_directory = "/home/juso/Music";

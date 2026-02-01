@@ -239,4 +239,5 @@ spawn-at-startup "noctalia-shell"                          // Status bar
 spawn-at-startup "dunst"                                   // Notifications
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"   // Clipboard manager
 spawn-at-startup "swww-daemon"                             // Wallpaper daemon
+spawn-at-startup "mpc" "play"                              // Resume playback on login
 spawn-at-startup "sh" "-c" "sleep 2 && swww img ~/Pictures/Wallpapers/default.jpg --transition-type wipe"  // Initial wallpaper
