@@ -87,24 +87,27 @@
 
   # Console keymap
   console.keyMap = "uk";
- 
+
   # ============================================================================
-  # DISPLAY MANAGER & WINDOW MANAGER
+  # SERVICES
   # ============================================================================
-  
   
   services = {
-    # Display Manager (SDDM)
+    # --------------------------------------------------------------------------
+    # Display Manager & Desktop Environment
+    # --------------------------------------------------------------------------
+    
+    # SDDM Display Manager
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
       theme = "breeze";
     };
 
-    # Desktop Environment (KDE Plasma)
+    # KDE Plasma Desktop Environment
     desktopManager.plasma6.enable = true;
 
-    # X Server configuration
+    # X Server Configuration
     xserver = {
       enable = true;
       xkb = {
@@ -112,107 +115,122 @@
         variant = "";
       };
     };
-  };
-  
-  # Enable niri window manager
-  programs.niri.enable = true;
-  programs.xwayland.enable = true;
-  
-  # Wayland environment variables
-  environment.sessionVariables = {
-    MOZ_ENABLE_WAYLAND = "1";
-    QT_QPA_PLATFORM = "wayland";
-    XDG_CURRENT_DESKTOP = "niri";
-    XDG_SESSION_TYPE = "wayland";
-    NIXOS_OZONE_WL = "1";
     
-    # Force Steam to use SDL Wayland backend
-    SDL_VIDEODRIVER = "wayland";
-  };
-
-  # ============================================================================
-  # FILE MANAGEMENT & USB AUTOMOUNTING
-  # ============================================================================
-  
-  # Enable USB automounting services
-  services = {
+    # --------------------------------------------------------------------------
+    # File Management & USB Automounting
+    # --------------------------------------------------------------------------
+    
     devmon.enable = true;
     gvfs.enable = true;
     tumbler.enable = true;
     udisks2.enable = true;
-  };
-  
-  # Thunar file manager with plugins
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs; [
-      thunar-archive-plugin
-      thunar-media-tags-plugin
-      thunar-volman
-    ];
+    
+    # --------------------------------------------------------------------------
+    # Audio
+    # --------------------------------------------------------------------------
+    
+    mpd = {
+      enable = true;
+      user = "juso";
+      startWhenNeeded = false;
+      
+      settings = {
+        music_directory = "/home/juso/Music";
+        audio_output = [
+          {
+            type = "pipewire";
+            name = "PipeWire Sound Server";
+          }
+        ];
+      };
+    };
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    
+    # --------------------------------------------------------------------------
+    # Privacy & Security
+    # --------------------------------------------------------------------------
+    
+    tor = {
+      enable = true;
+      client.enable = true;
+      
+      settings = {
+        # SOCKS proxy on localhost:9050
+        SOCKSPort = [ 9050 ];
+        
+        # Control port (for tools like Nyx)
+        ControlPort = [ 9051 ];
+      };
+    };
+    
+    # --------------------------------------------------------------------------
+    # SSH
+    # --------------------------------------------------------------------------
+    
+    openssh.enable = true;
   };
 
   # ============================================================================
-  # AUDIO
+  # SECURITY
   # ============================================================================
   
   security.rtkit.enable = true;
 
-  services.mpd = {
-    enable = true;
-    user = "juso";
-    settings.music_directory = "/home/juso/Music";
-    startWhenNeeded = false;
-  
-    settings = {
-      audio_output = [
-        {
-          type = "pipewire";
-          name = "PipeWire Sound Server";
-        }
-      ];
-    };
-  };
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
   # ============================================================================
-  # GAMING
-  # ============================================================================
-  
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    gamescopeSession.enable = true;
-  };
-  
-  # Enable GameMode for performance optimization
-  programs.gamemode.enable = true;
-
-  # ============================================================================
-  # USER ACCOUNTS
-  # ============================================================================
-  
-  users.users.juso = {
-    isNormalUser = true;
-    description = "Geordie Mac";
-    extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.zsh;
-    packages = with pkgs; [];
-  };
-
-  # ============================================================================
-  # SYSTEM-WIDE PROGRAMS
+  # PROGRAMS
   # ============================================================================
   
   programs = {
-    # Enable zsh system-wide
+    # --------------------------------------------------------------------------
+    # Window Managers & Compositors
+    # --------------------------------------------------------------------------
+    
+    # Niri Wayland Compositor
+    niri.enable = true;
+    
+    # XWayland support
+    xwayland.enable = true;
+    
+    # --------------------------------------------------------------------------
+    # File Manager
+    # --------------------------------------------------------------------------
+    
+    # Thunar file manager with plugins
+    thunar = {
+      enable = true;
+      plugins = with pkgs; [
+        thunar-archive-plugin
+        thunar-media-tags-plugin
+        thunar-volman
+      ];
+    };
+    
+    # --------------------------------------------------------------------------
+    # Gaming
+    # --------------------------------------------------------------------------
+    
+    # Steam
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      gamescopeSession.enable = true;
+    };
+    
+    # GameMode for performance optimization
+    gamemode.enable = true;
+    
+    # --------------------------------------------------------------------------
+    # Shell & Utilities
+    # --------------------------------------------------------------------------
+    
+    # Zsh shell
     zsh.enable = true;
     
     # Network diagnostics
@@ -226,44 +244,45 @@
   };
 
   # ============================================================================
-  # PRIVACY & SECURITY
+  # ENVIRONMENT
   # ============================================================================
   
-  services.tor = {
-    enable = true;
-    client.enable = true;
-    
-    # Optional: configure Tor settings
-    settings = {
-      # SOCKS proxy on localhost:9050
-      SOCKSPort = [ 9050 ];
-      
-      # Control port (for tools like Nyx)
-      ControlPort = [ 9051 ];
-    };
+  # Wayland environment variables (session-agnostic)
+  environment.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = "1";
+    QT_QPA_PLATFORM = "wayland";
+    # XDG_CURRENT_DESKTOP removed - each session sets its own
+    NIXOS_OZONE_WL = "1";
+    SDL_VIDEODRIVER = "wayland";
   };
-
-  # ============================================================================
-  # SYSTEM PACKAGES
-  # ============================================================================
   
+  # System packages
   environment.systemPackages = with pkgs; [
     git
     niri
     vim
     wget
-    libsForQt5.sddm-kcm 
+    kdePackages.sddm-kcm
   ];
+
+  # ============================================================================
+  # NIXPKGS CONFIGURATION
+  # ============================================================================
   
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # ============================================================================
-  # SERVICES
+  # USER ACCOUNTS
   # ============================================================================
   
-  # Enable OpenSSH daemon
-  services.openssh.enable = true;
+  users.users.juso = {
+    isNormalUser = true;
+    description = "Geordie Mac";
+    extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
+    packages = with pkgs; [];
+  };
 
   # ============================================================================
   # SYSTEM VERSION
