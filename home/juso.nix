@@ -127,9 +127,26 @@
   };
 
   # ============================================================================
-  # NIXOS-SPECIFIC PROGRAMS
+  # NIXOS-SPECIFIC MPD
   # ============================================================================
+
+  services.mpd = {
+  enable = true;
+  musicDirectory = "${config.home.homeDirectory}/Music";
   
+  extraConfig = ''
+    audio_output {
+      type "pipewire"
+      name "PipeWire Sound Server"
+    }
+    
+    bind_to_address "127.0.0.1"
+    port 6600
+    
+    auto_update "yes"
+    restore_paused "yes"
+  '';
+};
 
   # ----------------------------------------------------------------------------
   # ZSH 
