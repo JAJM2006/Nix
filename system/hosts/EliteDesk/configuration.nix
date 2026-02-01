@@ -58,7 +58,7 @@
   };
 
   # ============================================================================
-  # LOCALIZATION
+  # LOCALISATION
   # ============================================================================
   
   # Timezone
@@ -84,13 +84,7 @@
   # ============================================================================
   # INPUT CONFIGURATION
   # ============================================================================
-  
-  # X11 keymap
-  services.xserver.xkb = {
-    layout = "gb";
-    variant = "";
-  };
-  
+
   # Console keymap
   console.keyMap = "uk";
  
@@ -98,12 +92,24 @@
   # DISPLAY MANAGER & WINDOW MANAGER
   # ============================================================================
   
-  # Greetd display manager with tuigreet
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd ${pkgs.niri}/bin/niri-session";
+  
+  services = {
+    # Display Manager (SDDM)
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+      theme = "breeze";
+    };
+
+    # Desktop Environment (KDE Plasma)
+    desktopManager.plasma6.enable = true;
+
+    # X Server configuration
+    xserver = {
+      enable = true;
+      xkb = {
+        layout = "gb";
+        variant = "";
       };
     };
   };
@@ -246,6 +252,7 @@
     niri
     vim
     wget
+    libsForQt5.sddm-kcm 
   ];
   
   # Allow unfree packages
