@@ -155,7 +155,7 @@
   services.mpd = {
     enable = true;
     user = "juso";
-    musicDirectory = "/home/juso/Music";
+    settings.music_directory = "/home/juso/Music";
     startWhenNeeded = false;
   
     settings = {
