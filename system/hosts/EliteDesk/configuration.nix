@@ -128,28 +128,37 @@
     # --------------------------------------------------------------------------
     # Audio
     # --------------------------------------------------------------------------
-    
+
     mpd = {
       enable = true;
       user = "juso";
       startWhenNeeded = true;
   
-      musicDirectory = "/home/juso/Music";
-  
-      extraConfig = ''
-        audio_output {
-          type "pipewire"
-          name "PipeWire Sound Server"
-        }
+      settings = {
+        music_directory = "/home/juso/Music";
+
+        audio_output = [
+          {
+            type = "pipewire";
+            name = "PipeWire Sound Server";
+          }
+        ];
     
-        bind_to_address "127.0.0.1"
-        port "6600"
+        bind_to_address = "127.0.0.1";
+        port = 6600;
     
-        auto_update "yes"
-        restore_paused "yes"
-      '';
+        auto_update = "yes";
+        restore_paused = "yes";
+      };
     };
-    
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+
     # --------------------------------------------------------------------------
     # Privacy & Security
     # --------------------------------------------------------------------------
