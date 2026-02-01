@@ -38,6 +38,7 @@
     nix-output-monitor     # Output monitoring
     playerctl              # Media player controller
     eza                    # Shell tool    
+    ncmpcpp                # MPD MPC client
 
     # --------------------------------------------------------------------------
     # Desktop Environment (Wayland - Niri)
