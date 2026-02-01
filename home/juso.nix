@@ -131,22 +131,21 @@
   # ============================================================================
 
   services.mpd = {
-  enable = true;
-  musicDirectory = "${config.home.homeDirectory}/Music";
+    enable = true;
+    musicDirectory = "${config.home.homeDirectory}/Music";
+    network.listenAddress = "127.0.0.1";
+    network.port = 6600;
   
-  extraConfig = ''
-    audio_output {
-      type "pipewire"
-      name "PipeWire Sound Server"
-    }
+    extraConfig = ''
+      audio_output {
+        type "pipewire"
+        name "PipeWire Sound Server"
+      }
     
-    bind_to_address "127.0.0.1"
-    port 6600
-    
-    auto_update "yes"
-    restore_paused "yes"
-  '';
-};
+      auto_update "yes"
+      restore_paused "yes"
+    '';
+  };
 
   # ----------------------------------------------------------------------------
   # ZSH 
