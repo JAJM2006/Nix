@@ -579,6 +579,7 @@
         "setWallpaperOnAllMonitors": true,
         "showHiddenFiles": true,
         "solidColor": "#1a1a2e",
+        "sortOrder": "name",
         "transitionDuration": 1500,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": "random",
