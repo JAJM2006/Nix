@@ -91,7 +91,38 @@
     # --------------------------------------------------------------------------
     bibata-cursors         # Cursor theme
     papirus-icon-theme     # Icon theme
-  ];
+
+    # --------------------------------------------------------------------------
+    # OSINT
+    # --------------------------------------------------------------------------
+      # Recon & harvesting
+    theharvester
+    sherlock
+    recon-ng
+    holehe
+    maigret
+
+    # Network/domain tools
+    dnsenum
+    dnsrecon
+    amass
+    nmap
+
+    # Metadata & file analysis
+    exiftool
+    pdf-parser
+    binwalk
+
+    # Social media/archives 
+    yt-dlp
+    gallery-dl
+
+    # Utilities
+    tor
+    torsocks
+    jq        # JSON processing
+
+];
 
   # ============================================================================
   # NIXOS-SPECIFIC CONFIGURATION FILES
