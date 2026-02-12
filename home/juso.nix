@@ -191,6 +191,7 @@
       alias ls='eza --icons'
       alias ll='eza -la --icons'
       alias cat='bat'
+      alias music='ncmpcpp'
 
       # Wallpaper functions (Wayland)
       wall() {
