@@ -285,7 +285,7 @@ This is a personal configuration, but feel free to fork and adapt for your own u
 not YET under SPARK License Agreement - Comming soon
 
 
-└── > This means that anyone who uses any of the work in this repo AFTER SLA will have to opensource their repo too. AGAIN, not yet signed. 
+└── > This means that anyone who uses any of the work in this repo, in their own work and then publishes it, AFTER SLA will have to opensource their repo too. This does not affect private and personal work. AGAIN, not yet signed. 
 
 ---
 
