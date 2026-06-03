@@ -23,10 +23,10 @@ system/hosts/*/hardware-configuration.nix
 # ------------------------------------------------------------------------------
 # Secrets — never commit these
 # ------------------------------------------------------------------------------
-system/Secrets/*.age
-system/Secrets/*.key
-system/Secrets/*.pem
-system/Secrets/*.gpg
+system/secrets/*.age
+system/secrets/*.key
+system/secrets/*.pem
+system/secrets/*.gpg
 *.secret
 *.secrets
 .env
