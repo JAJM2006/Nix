@@ -1,11 +1,11 @@
 # JAJM2006's Nix Configuration
 
-A unified, cross-platform configuration system for NixOS and macOS using Nix flakes, nix-darwin, and home-manager.
+A unified, cross-platform configuration system for NixOS and macOS using Nix flakes and home-manager.
 
 ## 🖥️ Machines
 
-- **EliteDesk** - NixOS desktop (x86_64-linux)
-- **MacBook** - macOS laptop (aarch64-darwin)
+- **GabeCube** - NixOS desktop (x86_64-linux)
+- **Other** - Doesn't yet exist.
 
 ## 📁 Repository Structure
 
@@ -16,8 +16,6 @@ Settings/
 │   │   ├── alacritty/                        # Terminal emulator
 │   │   ├── nvim/                             # Neovim (LazyVim)
 │   │   └── starship/                         # Shell prompt
-│   ├── darwin/                               # macOS-specific configurations
-│   │   └── (empty)                           # Nowt here ATM.
 │   └── nixos/                                # Linux-specific configurations
 │       ├── dunst/                            # Notification daemon
 │       ├── niri/                             # Wayland compositor
@@ -27,24 +25,19 @@ Settings/
 │
 ├── home/
 │   ├── common.nix                            # Shared home-manager config
-│   ├── darwin.nix                            # macOS home-manager (imports common.nix)
 │   └── juso.nix                              # NixOS home-manager (imports common.nix)
 │
 ├── scripts/
 │   ├── rebuild                               # Rebuild NixOS
-│   ├── rdarwin                               # Rebuild macOS
-│   ├── maintain                              # Maintenance tasks
-│   ├── screenshot                            # Screenshot utility
-│   ├── wallpaper-rotate                      # Wallpaper rotation
-│   └── wallpaper-selector                    # Wallpaper selection
+│   └── maintain                              # Maintenance tasks
 │
 ├── system/
 │   ├── hosts/          
-│   │   ├── EliteDesk/
-│   │   │   ├── configuration.nix            # NixOS software config file for EliteDesk
-│   │   │   └── hardware-configuration.nix   # NixOS hardware config file for EliteDesk
-│   │   └── MacBook/    
-│   │       └── configuration.nix            # Nix-Darwin software config file for MacBook
+│   │   ├── GabeCube/
+│   │   │   ├── configuration.nix            # NixOS software config file for GabeCube
+│   │   │   └── hardware-configuration.nix   # NixOS hardware config file for GabeCube
+│   │   └── Other/    
+│   │       └── configuration.nix            # Placeholder
 │   └── secrets/          
 │       └── (empty)                          # Nowt here ATM.
 │
@@ -55,13 +48,13 @@ Settings/
 ## 🎯 Features
 
 ### Common Features on Both Platforms
-- **Shell**: Zsh with Starship prompt
+- **Shell**: ssh with Starship prompt
 - **Editor**: Neovim with LazyVim configuration
 - **Terminal**: Alacritty with custom config
 - **Git**: Unified configuration with custom aliases
-- **Tools**: bat, eza, fd, ripgrep, htop, tmux, fzf, btop
+- **Tools**: bat, esa, fd, ripgrep, htop, tmux, fsf, btop
 
-### NixOS-Specific (EliteDesk)
+### NixOS-Specific (GabeCube)
 - **Window Manager**: Niri (Wayland compositor)
 - **Desktop**: Waybar, Rofi, Dunst
 - **Gaming**: Steam with Gamescope, GameMode, MangoHud
@@ -69,11 +62,6 @@ Settings/
 - **File Manager**: Thunar with plugins
 - **Privacy**: Tor daemon
 
-### macOS-Specific (MacBook)
-- **System Defaults**: Dock, Finder, keyboard settings
-- **Package Manager**: Homebrew integration
-- **Trackpad**: Tap to click, three-finger drag
-- **Keyboard**: Caps Lock → Control remapping
 
 ## 🚀 Quick Start
 
@@ -83,25 +71,17 @@ Settings/
 ```bash
 nix-shell -p git
 # Clone the repository
-git clone https://github.com/JAJM2006/Nix ~/Settings
+git clone https://github.com/JAJM2006/Nix-Template ~/Settings
 cd ~/Settings
-
-# Build and activate
-sudo nixos-rebuild switch --flake .#EliteDesk
 ```
 
-#### macOS (MacBook) - Install Nix-Darwin.
+THEN RENAME ALL MENTIONS OF JUSO TO YOUR DESIRED USERNAME
+
 ```bash
-# Clone the repository
-git clone https://github.com/JAJM20006/Nix ~/Settings
-cd ~/Settings
-
-# Install nix-darwin (first time only)
-nix run nix-darwin -- switch --flake ~/Settings#MacBook
-
-# Subsequent rebuilds use the script
-./scripts/rdarwin
+# Build and activate
+sudo nixos-rebuild switch --flake .#GabeCube
 ```
+
 
 ### Daily Usage - GO TO "~/Settings/scripts" AND "Chmod +x"
 
@@ -111,17 +91,12 @@ cd ~/Settings
 rebuild
 ```
 
-#### On macOS
-```bash
-cd ~/Settings
-rdarwin
-```
 
 ## 📝 Making Changes
 
 ### Adding Packages
 
-**For both platforms** (edit `home/common.nix`):
+**For All platforms** (edit `home/common.nix`):
 ```nix
 home.packages = with pkgs; [
   neovim
@@ -137,12 +112,6 @@ home.packages = with pkgs; [
 ];
 ```
 
-**For macOS only** (edit `home/darwin.nix`):
-```nix
-home.packages = with pkgs; [
-  your-macos-package  # Add here
-];
-```
 
 ### Modifying Configurations
 
@@ -160,25 +129,19 @@ rebuild (NixOS) OR rdarwin (MacOS)
 
 ### System-Level Changes
 
-**NixOS**: Edit `system/hosts/EliteDesk/configuration.nix`
-**macOS**: Edit `system/hosts/MacBook/configuration.nix`
+**NixOS**: Edit `system/hosts/GabeCube/configuration.nix`
 
 Then rebuild.
 
 ## 🔄 Syncing Between Machines
 
 ```bash
-# On EliteDesk (after making changes)
+# On GabeCube (after making changes)
 cd ~/Settings
 git add -A
 git commit -m "Update configs"
 git push origin main
 
-# On MacBook
-cd ~/Settings
-git pull origin main
-rdarwin
-```
 
 ## 🛠️ Maintenance
 
@@ -193,9 +156,6 @@ cd ~/Settings
 # NixOS
 sudo nix-collect-garbage -d
 
-# macOS (runs automatically weekly)
-nix-collect-garbage -d
-```
 
 ### Update Flake Inputs
 ```bash
@@ -209,14 +169,14 @@ nix flake update
 ### Development
 - **Neovim**: LazyVim with LSPs (nixd, lua-language-server, stylua)
 - **Git**: Custom aliases (st, co, cm, gpdev, gpmain)
-- **Shell**: Zsh with case-insensitive completion
+- **Shell**: ssh with case-insensitive completion
 
 ### System Utilities
 - **Terminal**: Alacritty (GPU-accelerated)
-- **File Tools**: eza (ls), bat (cat), fd (find), ripgrep (grep)
+- **File Tools**: esa (ls), bat (cat), fd (find), ripgrep (grep)
 - **Monitoring**: htop, btop
 - **Multiplexer**: tmux
-- **Search**: fzf
+- **Search**: fsf
 
 ### NixOS Desktop
 - **Compositor**: Niri
@@ -227,7 +187,7 @@ nix flake update
 - **Wallpapers**: swww
 - **Clipboard**: wl-clipboard, cliphist
 
-## 🎨 Customization
+## 🎨 Customisation
 
 ### Git Workflow Functions
 Custom git functions available in the shell:
@@ -246,7 +206,6 @@ wallrandom               # Random wallpaper from ~/Pictures/Wallpapers
 ## 📚 Documentation
 
 - [NixOS Manual](https://nixos.org/manual/nixos/stable/)
-- [nix-darwin Manual](https://daiderd.com/nix-darwin/manual/index.html)
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
 - [Nix Flakes](https://nixos.wiki/wiki/Flakes)
 
@@ -257,27 +216,20 @@ This configuration uses a **shared base + platform-specific overrides** pattern:
 1. **Common Config** (`home/common.nix`): Cross-platform packages and settings
 2. **Platform Configs**: Import common.nix and add platform-specific items
    - `home/juso.nix`: NixOS-specific
-   - `home/darwin.nix`: macOS-specific
 3. **System Configs**: Platform-specific system settings
-   - `system/hosts/EliteDesk/`: NixOS system configuration
-   - `system/hosts/MacBook/`: nix-darwin system configuration
+   - `system/hosts/GabeCube/`: NixOS system configuration
+   - `system/hosts/Other/`: Secondary system configuration
 
-This minimizes duplication while maintaining platform flexibility.
+This minimises duplication while maintaining platform flexibility.
 
 ## 📊 System Information
 
-### EliteDesk (NixOS)
+### GabeCube (NixOS)
 - **OS**: NixOS 25.11
 - **Kernel**: Latest (linuxPackages_latest)
 - **Display**: Wayland (Niri)
 - **Audio**: PipeWire
-- **Shell**: Zsh with Starship
-
-### MacBook (macOS)
-- **OS**: macOS with nix-darwin
-- **Architecture**: Apple Silicon (aarch64)
-- **Shell**: Zsh with Starship
-- **Package Managers**: Nix + Homebrew
+- **Shell**: ssh with Starship
 
 ## 🤝 Contributing and License 📄
 
@@ -290,4 +242,4 @@ not YET under SPARK License Agreement - Comming soon
 ---
 
 **Author**: Geordie Mac (JAJM2006)  
-**Last Updated**: January 2026
+**Last Updated**: June 2026
