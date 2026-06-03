@@ -45,9 +45,7 @@ Fork this, run `setup.sh`, and you have a working base to rice from.
 ### 1. Clone the repo
 
 ```bash
-nix-shell -p git
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO ~/Settings
-cd ~/Settings
+nix-shell -p git --run "git clone https://github.com/JAJM2006/Nix-Template ~/Settings"
 ```
 
 ### 2. Run setup
