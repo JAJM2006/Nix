@@ -72,12 +72,12 @@
   # services.displayManager.gdm.enable = true;
 
   # --- KDE Plasma 6 -----------------------------------------------------------
-  # services.xserver.enable = true;
-  # services.desktopManager.plasma6.enable = true;
-  # services.displayManager.sddm = {
-  #   enable = true;
-  #   wayland.enable = true;
-  # };
+  services.xserver.enable = true;
+  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
 
   # --- Minimal / bring your own WM (Hyprland, Niri, Sway, etc.) -------------
   # services.xserver.enable = true;
