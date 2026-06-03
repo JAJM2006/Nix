@@ -133,7 +133,7 @@ gpdev  "wip: trying hyprland"  # add, commit, push to dev
 If you haven't set a remote yet:
 
 ```bash
-# Create a repo on GitHub/Codeberg/wherever, then:
+# Create a repo on GitHub or Codeberg or wherever, then:
 git remote add origin https://github.com/YOU/YOUR_REPO
 git push -u origin main
 ```
@@ -167,4 +167,4 @@ The `system/Secrets/` directory is gitignored for `*.age`, `*.key`, etc. When yo
 
 ---
 
-**Template based on work by Geordie Mac (JAJM2006)**
+**Template by Geordie Mac (JAJM2006)**
