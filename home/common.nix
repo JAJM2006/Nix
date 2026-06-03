@@ -1,137 +1,120 @@
 # ==============================================================================
-# JAJM2006's SHARED HOME MANAGER CONFIGURATION
+# HOME/COMMON.NIX — Shared home-manager configuration
 # ==============================================================================
-# Common configuration shared between NixOS (juso.nix) and macOS (darwin.nix)
-# This extracts all cross-platform packages and settings.
+# Packages and settings that apply on any machine.
+# Platform-specific stuff goes in youruser.nix.
 # ==============================================================================
 { config, pkgs, ... }:
 
 {
   # ============================================================================
-  # SHARED PACKAGES
+  # PACKAGES
   # ============================================================================
-  
+
   home.packages = with pkgs; [
     # --------------------------------------------------------------------------
-    # System Utilities (Cross-platform)
+    # System Utilities
     # --------------------------------------------------------------------------
-    bat                    # Cat clone with syntax highlighting
-    direnv                 # Directory-specific environments
-    eza                    # Modern ls replacement
-    fd                     # Modern find replacement
-    htop                   # Interactive process viewer
-    neofetch               # System information tool
-    ripgrep                # Fast grep alternative
-    tree                   # Directory tree viewer
-    gum                    # Shell scripting
-    
+    bat            # cat with syntax highlighting
+    eza            # modern ls
+    fd             # modern find
+    htop           # process viewer
+    neofetch       # system info
+    ripgrep        # fast grep
+    tree           # directory tree
+    gum            # pretty shell scripting
+
     # --------------------------------------------------------------------------
     # Terminal & Shell
     # --------------------------------------------------------------------------
-    alacritty              # GPU-accelerated terminal emulator
-    starship               # Cross-shell prompt
-    tmux                   # Terminal multiplexer
-    
-    # --------------------------------------------------------------------------
-    # Media
-    # --------------------------------------------------------------------------
-    mpc                   # Console for music player
-    
+    alacritty      # GPU-accelerated terminal
+    starship       # cross-shell prompt
+    tmux           # terminal multiplexer
+
     # --------------------------------------------------------------------------
     # Fonts
     # --------------------------------------------------------------------------
-    nerd-fonts.fira-code   # Nerd Fonts patched FiraCode
+    nerd-fonts.fira-code
   ];
 
   # ============================================================================
-  # SHARED CONFIGURATION FILES
+  # CONFIG FILE SYMLINKS
   # ============================================================================
-  
+
   home.file = {
-    # Cross-platform configs
-    ".config/alacritty".source = config.lib.file.mkOutOfStoreSymlink 
+    ".config/alacritty".source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/Settings/config/common/alacritty";
-    
-    ".config/starship".source = config.lib.file.mkOutOfStoreSymlink 
+
+    ".config/starship".source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/Settings/config/common/starship";
 
-    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink 
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/Settings/config/common/nvim";
   };
 
   # ============================================================================
-  # SHARED PROGRAMS
+  # PROGRAMS
   # ============================================================================
-  
-  # ----------------------------------------------------------------------------
-  # System Monitoring
-  # ----------------------------------------------------------------------------
+
   programs.btop.enable = true;
-  
-  # ----------------------------------------------------------------------------
-  # Fuzzy Finder
-  # ----------------------------------------------------------------------------
   programs.fzf.enable = true;
-  
+
   # ----------------------------------------------------------------------------
-  # Shell Configuration (Common parts)
+  # Zsh
   # ----------------------------------------------------------------------------
   programs.zsh = {
     enable = true;
-    
+
     initContent = ''
-      # Path configuration
       export PATH=$HOME/Settings/scripts:$PATH
-      
-      # Editor configuration
       export EDITOR=nvim
       export VISUAL=nvim
-      
-      # Git workflow functions
+
+      # Eza aliases
+      alias ls='eza --icons'
+      alias ll='eza -la --icons'
+      alias cat='bat'
+
+      # Case-insensitive completion
+      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+      # Git workflow shortcuts
       gpdev() {
         git add -A && git commit -m "$1" && git push origin dev
       }
-      
       gpmain() {
         git add -A && git commit -m "$1" && git push origin main
       }
-      
-      # Quick status check
       alias gs='git status'
     '';
   };
-  
+
   # ----------------------------------------------------------------------------
-  # Git Configuration
+  # Git
   # ----------------------------------------------------------------------------
   programs.git = {
     enable = true;
-    
-    settings.user.name = "Geordie Mac";
-    settings.user.email = "Joshua.McManus2006@gmail.com";
-    
+
+    settings.user.name  = "Your Name";       # CHANGE ME
+    settings.user.email = "your@email.com";  # CHANGE ME
+
     settings.aliases = {
-      # Quick operations
-      st = "status";
-      co = "checkout";
-      br = "branch";
-      cm = "commit -m";
-      cdev = "checkout dev";
-      cmain = "checkout main";
-      
-      # Advanced
-      last = "log -1 HEAD";
+      st     = "status";
+      co     = "checkout";
+      br     = "branch";
+      cm     = "commit -m";
+      last   = "log -1 HEAD";
       unstage = "reset HEAD --";
-      amend = "commit --amend --no-edit";
+      amend  = "commit --amend --no-edit";
     };
   };
 
   # ----------------------------------------------------------------------------
-  # Neovim (shared LSPs and tools)
+  # Neovim (LazyVim — config lives in config/common/nvim)
   # ----------------------------------------------------------------------------
   programs.neovim = {
     enable = true;
-    defaultEditor = false;
+    defaultEditor = true;
 
     extraPackages = with pkgs; [
       ripgrep
@@ -139,8 +122,8 @@
       gcc
       gnumake
       unzip
-      
-      # LSPs & Formatters
+
+      # LSPs & formatters — add/remove to taste
       lua-language-server
       stylua
       nixd
@@ -148,14 +131,21 @@
   };
 
   # ----------------------------------------------------------------------------
-  # Starship Prompt
+  # Starship prompt
   # ----------------------------------------------------------------------------
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
   };
 
-# ============================================================================
-# END OF HOME/COMMON.NIX
-# ============================================================================
+  # ----------------------------------------------------------------------------
+  # SSH
+  # ----------------------------------------------------------------------------
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    matchBlocks."*".addKeysToAgent = "yes";
+  };
+
+  services.ssh-agent.enable = true;
 }

@@ -1,5 +1,5 @@
 [general]
-import = ["~/.config/alacritty/themes/noctalia.toml"]
+import = ["~/.config/alacritty/themes/default.toml"]
 
 [window]
 padding.x = 10
@@ -10,7 +10,7 @@ blur = true
 
 [font]
 normal.family = "FiraCode Nerd Font"
-bold.family = "FiraCode Nerd Font"
+bold.family   = "FiraCode Nerd Font"
 italic.family = "FiraCode Nerd Font"
 size = 11.0
 
@@ -22,34 +22,9 @@ y = 1
 style = "Block"
 unfocused_hollow = true
 
-[colors.primary]
-background = "#1a1b26"
-foreground = "#c0caf5"
-
-[colors.normal]
-black   = "#15161e"
-red     = "#f7768e"
-green   = "#9ece6a"
-yellow  = "#e0af68"
-blue    = "#7aa2f7"
-magenta = "#bb9af7"
-cyan    = "#7dcfff"
-white   = "#a9b1d6"
-
-[colors.bright]
-black   = "#414868"
-red     = "#f7768e"
-green   = "#9ece6a"
-yellow  = "#e0af68"
-blue    = "#7aa2f7"
-magenta = "#bb9af7"
-cyan    = "#7dcfff"
-white   = "#c0caf5"
-
 [bell]
 animation = "EaseOutExpo"
 duration = 0
-color = "#ffffff"
 
 [selection]
 save_to_clipboard = true
