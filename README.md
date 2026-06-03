@@ -175,8 +175,8 @@ git push
 Or use the built-in shell shortcuts:
 
 ```bash
-gpmain "describe what you changed"   # add, commit, and push to main
-gpdev  "describe what you changed"  # add, commit, and push to dev
+gpmain "update nvim plugins"   # add, commit, and push to main
+gpdev  "wip: trying hyprland"  # add, commit, and push to dev
 ```
 
 If you haven't set a remote repository yet:
@@ -222,6 +222,14 @@ When you're ready to manage secrets properly (SSH keys, API tokens, passwords), 
 - [agenix](https://github.com/ryantm/agenix) — simpler, uses `age` encryption
 
 Neither is set up in this template — add whichever fits your needs.
+
+---
+
+## 🪟 Want to use Hyprland or Niri?
+
+Standalone window managers are popular in the NixOS community — but wiring one up from scratch is non-obvious the first time. See the dedicated guide:
+
+**[WINDOW_MANAGERS.md](WINDOW_MANAGERS.md)** — covers what a WM needs to replace a DE, the Nix config snippets to get Hyprland or Niri running, the XDG portal situation that bites everyone, and how to run KDE and Niri side-by-side while you're learning.
 
 ---
 
