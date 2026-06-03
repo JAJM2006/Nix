@@ -34,9 +34,11 @@ Once `setup.sh` runs, your config lives at `~/Settings` and looks like this:
 ~/Settings/
 ├── config/
 │   └── common/                               # App configs (shared across machines)
-│       ├── alacritty/                        # Terminal emulator config
-│       ├── nvim/                             # Neovim / LazyVim config
-│       └── starship/                         # Shell prompt config
+│   │   ├── alacritty/                        # Terminal emulator config
+│   │   ├── nvim/                             # Neovim / LazyVim config
+│   │   └── starship/                         # Shell prompt config
+│   └── YourHostname/                         # App configs (machine specific)
+│       └── alacritty-override/               # Just an example of a Machine specific config
 │
 ├── home/
 │   ├── common.nix                            # Packages and programs for all machines
