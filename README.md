@@ -175,8 +175,8 @@ git push
 Or use the built-in shell shortcuts:
 
 ```bash
-gpmain "update nvim plugins"   # add, commit, and push to main
-gpdev  "wip: trying hyprland"  # add, commit, and push to dev
+gpmain "describe what you changed"   # add, commit, and push to main
+gpdev  "describe what you changed"  # add, commit, and push to dev
 ```
 
 If you haven't set a remote repository yet:
