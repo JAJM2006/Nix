@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# ==============================================================================
+# Automatic Wallpaper Rotation Script
+# ==============================================================================
+# Automatically changes wallpaper every X minutes
+# Usage: Run in background or add to niri autostart
+# ==============================================================================
+
+WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+INTERVAL=600  # 10 minutes (600 seconds)
+
+# Transitions to randomly choose from
+TRANSITIONS=("wipe" "wave" "grow" "outer" "fade")
+
+# Check if wallpaper directory exists
+if [ ! -d "$WALLPAPER_DIR" ]; then
+    echo "Error: Wallpaper directory not found: $WALLPAPER_DIR"
+    exit 1
+fi
+
+echo "Starting wallpaper rotation (every ${INTERVAL}s)"
+echo "Directory: $WALLPAPER_DIR"
+
+while true; do
+    # Get random wallpaper
+    WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) | shuf -n 1)
+    
+    if [ -n "$WALLPAPER" ]; then
+        # Get random transition
+        TRANSITION=${TRANSITIONS[$RANDOM % ${#TRANSITIONS[@]}]}
+        
+        # Random angle for wipe/wave transitions
+        ANGLE=$((RANDOM % 360))
+        
+        echo "[$(date '+%H:%M:%S')] Changing to: $(basename "$WALLPAPER") (transition: $TRANSITION)"
+        
+        # Apply wallpaper
+        swww img "$WALLPAPER" \
+            --transition-type "$TRANSITION" \
+            --transition-angle "$ANGLE" \
+            --transition-duration 2
+    else
+        echo "No wallpapers found in $WALLPAPER_DIR"
+    fi
+    
+    sleep "$INTERVAL"
+done
