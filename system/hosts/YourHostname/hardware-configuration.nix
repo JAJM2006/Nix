@@ -1,7 +1,3 @@
-# Copy your hardware-configuration.nix here.
-#
-# After a fresh NixOS install it lives at /etc/nixos/hardware-configuration.nix
-#
-#   cp /etc/nixos/hardware-configuration.nix ~/Settings/system/hosts/YourHostname/
-#
-# Do not hand-write this file — nixos-generate-config produces it for you.
+# ERROR: Run setup.sh first, or copy your hardware-configuration.nix here manually.
+# This file is intentionally invalid — it must be replaced before building.
+abort "hardware-configuration.nix has not been set up yet"
