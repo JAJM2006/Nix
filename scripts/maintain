@@ -10,8 +10,7 @@ case $choice in
     "Garbage Collection")
         days=$(gum input --placeholder "Delete generations older than? (e.g. 7d)")
         echo "🗑️  Collecting garbage (keeping last $days)..."
-        sudo nix-env --delete-generations +"$days" --profile /nix/var/nix/profiles/system
-        sudo nix-collect-garbage -d
+        sudo nix-collect-garbage --delete-older-than "$days"
         ;;
     "Optimise Store")
         echo "🧹 Deduplicating nix store..."

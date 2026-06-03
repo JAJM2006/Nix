@@ -17,9 +17,9 @@
     # --------------------------------------------------------------------------
     bat            # cat with syntax highlighting
     eza            # modern ls
+    fastfetch      # system info
     fd             # modern find
     htop           # process viewer
-    neofetch       # system info
     ripgrep        # fast grep
     tree           # directory tree
     gum            # pretty shell scripting

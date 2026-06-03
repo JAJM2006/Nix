@@ -100,7 +100,7 @@
     # File management helpers (useful for most DEs)
     gvfs.enable    = true;
     udisks2.enable = true;
-    tumbler.enable = true;  # thumbnail service (remove if not using Thunar/Nautilus)
+    # tumbler.enable = true;  # thumbnail service (KDE Plasma will fight this.)
 
     # SSH
     openssh.enable = true;
@@ -115,13 +115,13 @@
     xwayland.enable = true;   # X11 app compatibility on Wayland
 
     # File manager — swap for dolphin, nautilus, etc. if you prefer
-    thunar = {
-      enable  = true;
-      plugins = with pkgs; [
-        thunar-archive-plugin
-        thunar-volman
-      ];
-    };
+    # thunar = {
+    #   enable  = true;
+    #   plugins = with pkgs; [
+    #     thunar-archive-plugin
+    #     thunar-volman
+    #   ];
+    # };
 
     # GPG
     gnupg.agent = {

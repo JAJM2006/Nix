@@ -58,12 +58,12 @@ This will ask for your username, hostname, full name, email, timezone, and keybo
 
 ### 3. Choose a desktop environment
 
+KDE Plasma is chosen as the default Desktop Environment, however it is not always the prefered. If you wish to change:
 Open `~/Settings/system/hosts/<YourHostname>/configuration.nix` and uncomment one of the DE blocks (GNOME, KDE, or bring your own WM).
 
 ### 4. Build
 
 ```bash
-chmod +x ~/Settings/scripts/rebuild ~/Settings/scripts/maintain
 cd ~/Settings
 rebuild
 ```
