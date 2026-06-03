@@ -103,7 +103,7 @@
     # File management helpers (useful for most DEs)
     gvfs.enable    = true;
     udisks2.enable = true;
-    # tumbler.enable = true;  # thumbnail service (KDE Plasma will fight this.)
+    # tumbler.enable = true;  # thumbnail service (KDE Plasma (the default) has its own thumbnailer. Only activate if not using KDE.)
 
     # SSH
     openssh.enable = true;
