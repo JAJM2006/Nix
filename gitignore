@@ -1,0 +1,42 @@
+# ==============================================================================
+# .gitignore
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Nix
+# ------------------------------------------------------------------------------
+
+# Commit flake.lock so others get reproducible builds.
+# If you'd rather let everyone resolve fresh, uncomment the line below:
+# flake.lock
+
+# Nix build results
+result
+result-*
+
+# ------------------------------------------------------------------------------
+# Hardware config — contains UUIDs and partition info specific to YOUR machine.
+# Each person generates their own with nixos-generate-config.
+# ------------------------------------------------------------------------------
+system/hosts/*/hardware-configuration.nix
+
+# ------------------------------------------------------------------------------
+# Secrets — never commit these
+# ------------------------------------------------------------------------------
+system/Secrets/*.age
+system/Secrets/*.key
+system/Secrets/*.pem
+system/Secrets/*.gpg
+*.secret
+*.secrets
+.env
+
+# ------------------------------------------------------------------------------
+# Editor / OS noise
+# ------------------------------------------------------------------------------
+.DS_Store
+.direnv/
+.vscode/
+*.swp
+*.swo
+*~
