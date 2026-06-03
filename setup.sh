@@ -80,6 +80,24 @@ TIMEZONE=$(ask "Your timezone (e.g. Europe/London)"      "Europe/London")
 KEYMAP=$(ask   "Your keyboard layout (e.g. us, gb, de)"  "us")
 
 # ==============================================================================
+# CHOOSE DESKTOP ENVIRONMENT
+# ==============================================================================
+
+echo ""
+title "Choose a desktop environment"
+echo ""
+gum style --foreground 245 "  Not sure? KDE Plasma is the most familiar if you're coming from Windows."
+echo ""
+
+DE=$(gum choose \
+    "KDE Plasma 6 (recommended)" \
+    "GNOME" \
+    "None — I'll configure my own WM")
+
+echo ""
+success "Selected: $DE"
+
+# ==============================================================================
 # CONFIRM
 # ==============================================================================
 
@@ -92,7 +110,8 @@ gum style --border normal --padding "0 2" \
     "  Your Name       →  $FULLNAME" \
     "  your@email.com  →  $EMAIL" \
     "  Timezone        →  $TIMEZONE" \
-    "  Keyboard        →  $KEYMAP"
+    "  Keyboard        →  $KEYMAP" \
+    "  Desktop         →  $DE"
 echo ""
 
 if ! confirm "Looks good? Continue?"; then
@@ -105,21 +124,15 @@ echo ""
 # ==============================================================================
 # RENAME FILES AND DIRECTORIES
 # ==============================================================================
-# The repo ships with 'YourHostname' (lowercase n) consistently.
-# We match that exact casing everywhere.
-# ==============================================================================
 
 title "Renaming files and directories..."
 echo ""
 
-# Rename home/youruser.nix → home/<username>.nix
 if [[ -f "$REPO_DIR/home/youruser.nix" ]]; then
     mv "$REPO_DIR/home/youruser.nix" "$REPO_DIR/home/${USERNAME}.nix"
     success "home/youruser.nix  →  home/${USERNAME}.nix"
 fi
 
-# Rename system/hosts/YourHostname/ → system/hosts/<hostname>/
-# Note: the directory is 'YourHostname' (lowercase n) — match exactly.
 if [[ -d "$REPO_DIR/system/hosts/YourHostname" ]]; then
     mv "$REPO_DIR/system/hosts/YourHostname" "$REPO_DIR/system/hosts/${HOSTNAME}"
     success "system/hosts/YourHostname/  →  system/hosts/${HOSTNAME}/"
@@ -135,12 +148,14 @@ fi
 title "Updating file contents..."
 echo ""
 
+CONFIG_NIX="$REPO_DIR/system/hosts/${HOSTNAME}/configuration.nix"
+
 FILES=(
     "$REPO_DIR/flake.nix"
     "$REPO_DIR/scripts/rebuild"
     "$REPO_DIR/home/${USERNAME}.nix"
     "$REPO_DIR/home/common.nix"
-    "$REPO_DIR/system/hosts/${HOSTNAME}/configuration.nix"
+    "$CONFIG_NIX"
 )
 
 do_replace() {
@@ -159,7 +174,6 @@ for f in "${FILES[@]}"; do
     do_replace "$f" "your@email.com" "$EMAIL"
     do_replace "$f" "Europe/London"  "$TIMEZONE"
 
-    # Keyboard layout — only replace in configuration.nix to avoid false hits
     if [[ "$f" == *"configuration.nix" ]]; then
         do_replace "$f" 'layout  = "gb"'  "layout  = \"${KEYMAP}\""
         do_replace "$f" 'keyMap = "uk"'   "keyMap = \"${KEYMAP}\""
@@ -168,6 +182,70 @@ for f in "${FILES[@]}"; do
 
     success "Updated: ${f#$REPO_DIR/}"
 done
+
+# ==============================================================================
+# UNCOMMENT CHOSEN DESKTOP ENVIRONMENT
+# ==============================================================================
+
+echo ""
+title "Enabling desktop environment..."
+echo ""
+
+if [[ -f "$CONFIG_NIX" ]]; then
+    case "$DE" in
+        "KDE Plasma 6 (recommended)")
+            sed -i 's|^  # services.xserver.enable = true;.*KDE.*|  services.xserver.enable = true;|' "$CONFIG_NIX"
+            sed -i '/# --- KDE Plasma 6/,/# ---/{
+                s|^  # services.desktopManager.plasma6.enable = true;|  services.desktopManager.plasma6.enable = true;|
+                s|^  # services.displayManager.sddm = {|  services.displayManager.sddm = {|
+                s|^  #   enable = true;|    enable = true;|
+                s|^  #   wayland.enable = true;|    wayland.enable = true;|
+                s|^  # };|  };|
+            }' "$CONFIG_NIX"
+            # Simpler, more reliable approach: use Python to uncomment the KDE block
+            python3 - "$CONFIG_NIX" <<'PYEOF'
+import re, sys
+path = sys.argv[1]
+text = open(path).read()
+
+kde_block = r'(  # --- KDE Plasma 6.*?)(  # --- Minimal)'
+def uncomment_kde(m):
+    block = m.group(1)
+    # uncomment lines inside the KDE block only
+    block = re.sub(r'^  # (services\.|  enable|  wayland)', r'  \1', block, flags=re.MULTILINE)
+    return block + m.group(2)
+
+text = re.sub(kde_block, uncomment_kde, text, flags=re.DOTALL)
+open(path, 'w').write(text)
+PYEOF
+            success "KDE Plasma 6 enabled"
+            ;;
+        "GNOME")
+            python3 - "$CONFIG_NIX" <<'PYEOF'
+import re, sys
+path = sys.argv[1]
+text = open(path).read()
+
+gnome_block = r'(  # --- GNOME.*?)(  # --- KDE)'
+def uncomment_gnome(m):
+    block = m.group(1)
+    block = re.sub(r'^  # (services\.)', r'  \1', block, flags=re.MULTILINE)
+    return block + m.group(2)
+
+text = re.sub(gnome_block, uncomment_gnome, text, flags=re.DOTALL)
+open(path, 'w').write(text)
+PYEOF
+            success "GNOME enabled"
+            ;;
+        "None — I'll configure my own WM")
+            success "No DE enabled — all blocks left commented out"
+            info "Edit system/hosts/${HOSTNAME}/configuration.nix to configure your WM"
+            ;;
+    esac
+else
+    warn "Could not find configuration.nix — DE not configured automatically"
+    warn "Edit system/hosts/${HOSTNAME}/configuration.nix manually"
+fi
 
 # ==============================================================================
 # HARDWARE CONFIG
@@ -188,25 +266,6 @@ else
     info  "Copy it manually when you have it:"
     info  "  cp /etc/nixos/hardware-configuration.nix $HARDWARE_DST"
 fi
-
-# ==============================================================================
-# DESKTOP ENVIRONMENT REMINDER
-# ==============================================================================
-
-echo ""
-gum style \
-    --border rounded \
-    --border-foreground 214 \
-    --padding "1 3" \
-    "  Before building, open:" \
-    "  system/hosts/${HOSTNAME}/configuration.nix" \
-    "" \
-    "  Find the DESKTOP ENVIRONMENT section and" \
-    "  uncomment the KDE Plasma block (recommended)," \
-    "  or whichever DE you prefer." \
-    "" \
-    "  Building without doing this will leave you" \
-    "  at a text-only terminal with no desktop."
 
 # ==============================================================================
 # MAKE SCRIPTS EXECUTABLE
@@ -266,11 +325,22 @@ gum style \
 echo ""
 info "Next steps:"
 echo ""
-gum style --padding "0 2" \
-    "1.  Uncomment KDE Plasma in configuration.nix (see reminder above)" \
-    "" \
-    "2.  Build your system:" \
-    "      cd ~/Settings && rebuild" \
-    "" \
-    "3.  Reboot, log in to KDE, then tweak to your heart's content."
+
+if [[ "$DE" == "None — I'll configure my own WM" ]]; then
+    gum style --padding "0 2" \
+        "1.  Configure your WM in system/hosts/${HOSTNAME}/configuration.nix" \
+        "" \
+        "2.  Build your system:" \
+        "      cd ~/Settings && rebuild" \
+        "" \
+        "3.  Reboot and enjoy."
+else
+    gum style --padding "0 2" \
+        "1.  Build your system:" \
+        "      cd ~/Settings && rebuild" \
+        "" \
+        "2.  Reboot and log in to ${DE%%(*}" \
+        "" \
+        "3.  Tweak to your heart's content."
+fi
 echo ""
