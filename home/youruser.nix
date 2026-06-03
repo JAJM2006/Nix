@@ -5,7 +5,7 @@
 # Update flake.nix to point at the new filename.
 # Common settings live in common.nix — add NixOS-only things here.
 # ==============================================================================
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [ ./common.nix ];
@@ -26,38 +26,41 @@
     # --------------------------------------------------------------------------
     # Basics
     # --------------------------------------------------------------------------
-    brightnessctl   # backlight control
+    brightnessctl   # backlight control (laptop screen brightness keys)
     firefox         # browser
-    playerctl       # media key support
+    playerctl       # media key support (play/pause/next on keyboard)
 
     # --------------------------------------------------------------------------
     # Desktop utilities — uncomment what you need
     # --------------------------------------------------------------------------
-    # cliphist        # clipboard history (Wayland)
-    # grim            # screenshot (Wayland)
-    # slurp           # region select for screenshots
-    # swww            # wallpaper daemon (Wayland)
-    # wl-clipboard    # clipboard CLI (Wayland)
-    # dunst           # notification daemon (standalone WMs)
-    # rofi            # app launcher (standalone WMs)
+    # cliphist        # clipboard history — remembers everything you copy (Wayland)
+    # grim            # screenshot tool (Wayland)
+    # slurp           # draw a region on screen to capture (used with grim)
+    # swww            # wallpaper daemon — set and animate wallpapers (Wayland)
+    # wl-clipboard    # copy/paste from the terminal (Wayland)
+    # dunst           # notification popups (needed if you use a standalone WM)
+    # rofi            # app launcher — like Spotlight but for Linux
 
     # --------------------------------------------------------------------------
     # Audio
     # --------------------------------------------------------------------------
-    pavucontrol     # PulseAudio/PipeWire GUI volume control
-    # ncmpcpp         # TUI MPD client (uncomment if you use MPD)
-    # mpc             # MPD CLI (uncomment if you use MPD)
+    pavucontrol     # GUI volume mixer for PipeWire/PulseAudio
+    # ncmpcpp         # TUI music player (terminal-based, works with MPD)
+    # mpc             # CLI to control MPD from scripts/keybinds
 
     # --------------------------------------------------------------------------
     # Themes — swap these out to your taste
     # --------------------------------------------------------------------------
-    bibata-cursors
-    papirus-icon-theme
+    bibata-cursors      # clean cursor theme
+    papirus-icon-theme  # icon set used by most DEs and file managers
   ];
 
   # ============================================================================
   # MPD (Music Player Daemon) — uncomment if you want it
   # ============================================================================
+  # MPD is a background music player you control via keyboard shortcuts or a
+  # TUI client (ncmpcpp above). Skip this if you just want to use a normal
+  # music app like Spotify or Rhythmbox.
 
   # services.mpd = {
   #   enable = true;
@@ -77,8 +80,10 @@
   # ============================================================================
   # ADDITIONAL ZSH CONFIG (NixOS-specific)
   # ============================================================================
+  # lib.mkAfter ensures this is appended AFTER the shared config in common.nix
+  # rather than conflicting with it.
 
-  programs.zsh.initContent = ''
+  programs.zsh.initContent = lib.mkAfter ''
     # Wayland wallpaper helpers — uncomment if you use swww
     # wall() { swww img "$1" --transition-type wipe --transition-angle 30; }
     # wallrandom() { swww img "$(find ~/Pictures/Wallpapers -type f | shuf -n 1)" --transition-type random; }
