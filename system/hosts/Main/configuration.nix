@@ -1,5 +1,5 @@
 # ==============================================================================
-# JAJM2006's NIXOS SYSTEM CONFIGURATION - EliteDesk
+# JAJM2006's NIXOS SYSTEM CONFIGURATION
 # ==============================================================================
 # This is the main system configuration file for NixOS.
 # Help is available in the configuration.nix(5) man page and NixOS manual.
@@ -48,11 +48,11 @@
   };
 
   # ============================================================================
-  # NETWORKING
+  # NETWORKING - REPLACE PLACEHOLDERS 
   # ============================================================================
   
   networking = {
-    hostName = "EliteDesk";
+    hostName = "GabeCube";
     networkmanager.enable = true;
     firewall.enable = false;
   };
