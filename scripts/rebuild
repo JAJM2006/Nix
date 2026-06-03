@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
-cd ~/Settings
-sudo nixos-rebuild switch --flake .#YourHostname
+cd "$(dirname "$0")/.."
+sudo nixos-rebuild switch --flake ".#$(hostname)"
