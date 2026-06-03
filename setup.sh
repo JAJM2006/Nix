@@ -77,7 +77,11 @@ HOSTNAME=$(ask "Your machine hostname (e.g. nixbox)"     "YourHostname")
 FULLNAME=$(ask "Your full name (for git config)"         "Your Name")
 EMAIL=$(ask    "Your email (for git config)"             "your@email.com")
 TIMEZONE=$(ask "Your timezone (e.g. Europe/London)"      "Europe/London")
-KEYMAP=$(ask   "Your keyboard layout (e.g. us, gb, de)"  "us")
+
+echo ""
+gum style --foreground 245 "  Keyboard layout codes: us · gb · de · fr · es · it · pt · ru"
+echo ""
+KEYMAP=$(ask "Your keyboard layout code" "us")
 
 # ==============================================================================
 # CHOOSE DESKTOP ENVIRONMENT
@@ -174,17 +178,55 @@ for f in "${FILES[@]}"; do
     do_replace "$f" "your@email.com" "$EMAIL"
     do_replace "$f" "Europe/London"  "$TIMEZONE"
 
-    if [[ "$f" == *"configuration.nix" ]]; then
-        do_replace "$f" 'layout  = "gb"'  "layout  = \"${KEYMAP}\""
-        do_replace "$f" 'keyMap = "uk"'   "keyMap = \"${KEYMAP}\""
-        do_replace "$f" 'layout "gb"'     "layout \"${KEYMAP}\""
-    fi
-
     success "Updated: ${f#$REPO_DIR/}"
 done
 
 # ==============================================================================
+# KEYBOARD LAYOUT
+# ==============================================================================
+# configuration.nix has two separate keyboard settings:
+#   xkb.layout  — X11/Wayland layout code (e.g. "gb", "us", "de")
+#   console.keyMap — TTY keymap name, which sometimes differs:
+#     gb layout → "uk" keymap   (the one special case worth handling)
+#     everything else → same code for both
+# ==============================================================================
+
+echo ""
+title "Setting keyboard layout..."
+echo ""
+
+if [[ -f "$CONFIG_NIX" ]]; then
+    # Decide the console keymap
+    if [[ "$KEYMAP" == "gb" ]]; then
+        CONSOLE_KEYMAP="uk"
+    else
+        CONSOLE_KEYMAP="$KEYMAP"
+    fi
+
+    python3 - "$CONFIG_NIX" "$KEYMAP" "$CONSOLE_KEYMAP" <<'PYEOF'
+import sys, re
+
+path, xkb_layout, console_keymap = sys.argv[1], sys.argv[2], sys.argv[3]
+text = open(path).read()
+
+# Replace xkb layout (inside the services.xserver.xkb block)
+text = re.sub(r'(xkb\s*=\s*\{[^}]*layout\s*=\s*")[^"]*(")', rf'\g<1>{xkb_layout}\2', text, flags=re.DOTALL)
+
+# Replace console keyMap
+text = re.sub(r'(console\.keyMap\s*=\s*")[^"]*(")', rf'\g<1>{console_keymap}\2', text)
+
+open(path, 'w').write(text)
+PYEOF
+    success "xkb.layout = \"$KEYMAP\",  console.keyMap = \"$CONSOLE_KEYMAP\""
+else
+    warn "Could not find configuration.nix — keyboard layout not set"
+fi
+
+# ==============================================================================
 # UNCOMMENT CHOSEN DESKTOP ENVIRONMENT
+# ==============================================================================
+# Uses Python to reliably uncomment the right block. Each DE section is
+# bounded by its own comment header, so we only touch the chosen one.
 # ==============================================================================
 
 echo ""
@@ -193,50 +235,57 @@ echo ""
 
 if [[ -f "$CONFIG_NIX" ]]; then
     case "$DE" in
+
         "KDE Plasma 6 (recommended)")
-            sed -i 's|^  # services.xserver.enable = true;.*KDE.*|  services.xserver.enable = true;|' "$CONFIG_NIX"
-            sed -i '/# --- KDE Plasma 6/,/# ---/{
-                s|^  # services.desktopManager.plasma6.enable = true;|  services.desktopManager.plasma6.enable = true;|
-                s|^  # services.displayManager.sddm = {|  services.displayManager.sddm = {|
-                s|^  #   enable = true;|    enable = true;|
-                s|^  #   wayland.enable = true;|    wayland.enable = true;|
-                s|^  # };|  };|
-            }' "$CONFIG_NIX"
-            # Simpler, more reliable approach: use Python to uncomment the KDE block
             python3 - "$CONFIG_NIX" <<'PYEOF'
 import re, sys
+
 path = sys.argv[1]
 text = open(path).read()
 
-kde_block = r'(  # --- KDE Plasma 6.*?)(  # --- Minimal)'
+# Match the KDE block: from its header comment up to (not including) the next header
+kde_block_re = re.compile(
+    r'([ \t]*# --- KDE Plasma 6.*?)'   # KDE header
+    r'(?=[ \t]*# --- )',                # stop before the next header
+    re.DOTALL
+)
+
 def uncomment_kde(m):
     block = m.group(1)
-    # uncomment lines inside the KDE block only
-    block = re.sub(r'^  # (services\.|  enable|  wayland)', r'  \1', block, flags=re.MULTILINE)
-    return block + m.group(2)
+    # Remove the leading '#' and one space from each commented-out line
+    block = re.sub(r'^([ \t]*)# (services\.|  enable|  wayland)', r'\1\2', block, flags=re.MULTILINE)
+    return block
 
-text = re.sub(kde_block, uncomment_kde, text, flags=re.DOTALL)
+text = kde_block_re.sub(uncomment_kde, text)
 open(path, 'w').write(text)
 PYEOF
             success "KDE Plasma 6 enabled"
             ;;
+
         "GNOME")
             python3 - "$CONFIG_NIX" <<'PYEOF'
 import re, sys
+
 path = sys.argv[1]
 text = open(path).read()
 
-gnome_block = r'(  # --- GNOME.*?)(  # --- KDE)'
+gnome_block_re = re.compile(
+    r'([ \t]*# --- GNOME.*?)'
+    r'(?=[ \t]*# --- )',
+    re.DOTALL
+)
+
 def uncomment_gnome(m):
     block = m.group(1)
-    block = re.sub(r'^  # (services\.)', r'  \1', block, flags=re.MULTILINE)
-    return block + m.group(2)
+    block = re.sub(r'^([ \t]*)# (services\.)', r'\1\2', block, flags=re.MULTILINE)
+    return block
 
-text = re.sub(gnome_block, uncomment_gnome, text, flags=re.DOTALL)
+text = gnome_block_re.sub(uncomment_gnome, text)
 open(path, 'w').write(text)
 PYEOF
             success "GNOME enabled"
             ;;
+
         "None — I'll configure my own WM")
             success "No DE enabled — all blocks left commented out"
             info "Edit system/hosts/${HOSTNAME}/configuration.nix to configure your WM"
