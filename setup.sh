@@ -79,6 +79,11 @@ EMAIL=$(ask    "Your email (for git config)"             "your@email.com")
 TIMEZONE=$(ask "Your timezone (e.g. Europe/London)"      "Europe/London")
 
 echo ""
+gum style --foreground 245 "  Common locales: en_GB.UTF-8 · en_US.UTF-8 · de_DE.UTF-8 · fr_FR.UTF-8"
+echo ""
+LOCALE=$(ask   "Your locale"                                 "en_US.UTF-8")
+
+echo ""
 gum style --foreground 245 "  Keyboard layout codes: us · gb · de · fr · es · it · pt · ru"
 echo ""
 KEYMAP=$(ask "Your keyboard layout code" "us")
@@ -114,6 +119,7 @@ gum style --border normal --padding "0 2" \
     "  Your Name       →  $FULLNAME" \
     "  your@email.com  →  $EMAIL" \
     "  Timezone        →  $TIMEZONE" \
+    "  Locale          →  $LOCALE" \
     "  Keyboard        →  $KEYMAP" \
     "  Desktop         →  $DE"
 echo ""
@@ -177,6 +183,7 @@ for f in "${FILES[@]}"; do
     do_replace "$f" "Your Name"      "$FULLNAME"
     do_replace "$f" "your@email.com" "$EMAIL"
     do_replace "$f" "Europe/London"  "$TIMEZONE"
+    do_replace "$f" "en_GB.UTF-8"    "$LOCALE"
 
     success "Updated: ${f#$REPO_DIR/}"
 done
