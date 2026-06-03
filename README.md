@@ -1,6 +1,7 @@
-# JAJM2006's Nix Configuration
+# JAJM2006's Nix Configuration (TEMPLATE)
 
-A unified, cross-platform configuration system for NixOS and macOS using Nix flakes and home-manager.
+A unified, cross-platform configuration system for NixOS using Nix flakes and home-manager.
+PLEASE BE AWARE: I have my specific applications here such as Niri as my chosen Desktop.
 
 ## 🖥️ Machines
 
