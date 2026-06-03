@@ -1,0 +1,33 @@
+[general]
+import = ["~/.config/alacritty/themes/default.toml"]
+
+[window]
+padding.x = 10
+padding.y = 10
+decorations = "None"
+opacity = 0.95
+blur = true
+
+[font]
+normal.family = "FiraCode Nerd Font"
+bold.family   = "FiraCode Nerd Font"
+italic.family = "FiraCode Nerd Font"
+size = 11.0
+
+[font.offset]
+x = 0
+y = 1
+
+[cursor]
+style = "Block"
+unfocused_hollow = true
+
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+
+[selection]
+save_to_clipboard = true
+
+[mouse]
+hide_when_typing = true
