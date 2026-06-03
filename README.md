@@ -56,7 +56,7 @@ Once `setup.sh` runs, your config lives at `~/Settings` and looks like this:
 │
 ├── setup.sh                                 # Run this first
 ├── flake.nix                                # The entry point — wires everything together
-└── flake.lock                               # Pinned dependency versions (commit this)
+└── flake.lock                               # Pinned dependency versions — always commit this
 ```
 
 **The key idea:** `config/` holds app config files that are *symlinked* into place, so you can edit them directly and see changes immediately. `home/` and `system/` hold Nix files that declare what's installed and how services are configured — these require a `rebuild` to take effect.
@@ -101,6 +101,24 @@ reboot
 ```
 
 Log in and you're home.
+
+---
+
+## 🔥 When a rebuild fails
+
+It will happen eventually. Here's the important thing: **a failed rebuild doesn't touch your running system.** NixOS only switches to the new config once the build fully succeeds, so if it errors out, you're still on whatever was working before.
+
+The most common causes, in rough order of likelihood:
+
+**Typo in a `.nix` file** — Nix will point at the line. Read the error, find the file, fix it, run `rebuild` again.
+
+**Package name doesn't exist** — search at [search.nixos.org/packages](https://search.nixos.org/packages) to find the correct name. Package names are case-sensitive.
+
+**Unfree package not allowed** — if you get an error about a package being unfree, add `nixpkgs.config.allowUnfree = true;` to `configuration.nix` (it's already there in this template).
+
+**Something broke after `nix flake update`** — roll back by running `sudo nixos-rebuild switch --rollback`, or check out the previous `flake.lock` with `git checkout flake.lock` and rebuild.
+
+If the error is a wall of red text you can't parse, copy the last 10–15 lines and search them — the NixOS Discourse and the NixOS subreddit both have active communities who've seen most errors before.
 
 ---
 
