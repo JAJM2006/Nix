@@ -32,6 +32,10 @@
       YourHostname = nixpkgs.lib.nixosSystem {
         inherit system;
 
+        # Pass inputs to system modules (e.g. so configuration.nix can consume
+        # third-party NixOS modules like inputs.niri.nixosModules.niri).
+        specialArgs = { inherit inputs; };
+
         modules = [
           ./system/hosts/YourHostname/configuration.nix
 
