@@ -4,6 +4,10 @@ A NixOS configuration using Nix flakes and home-manager, designed to live at `~/
 
 Fork this, run `setup.sh`, and you have a working base to rice from.
 
+## BUT FIRST.
+
+welcome to NixOS. This README.md (.md stands for markdown) is a simple guide on how to set up your first NixOS build, via my premade template which should make it easier for you to get started. Now, that is all well and dandy unless you dont even know what NixOS is. Nix, the language, is a tool for declerative coding. In other words, what you see IS what you get. NixOS, on the other hand, is a linux distrobution that utilises the fully declerative nature of the Nix programming language to make your entire system your own. This is done from a bunch of dotfiles and config.nix files. Below is a tree which better explains how this individual NixOS template works.
+
 ## 🖥️ Machines
 
 - **YourHostname** - NixOS desktop (x86_64-linux) — renamed by `setup.sh`
@@ -11,7 +15,7 @@ Fork this, run `setup.sh`, and you have a working base to rice from.
 ## 📁 Repository Structure
 
 ```
-~/Settings/
+~/Settings/                                   # (NOTE: ~/Settings is a shortcut for saying /home/<your_username>/Settings)
 ├── config/
 │   └── common/                               # Cross-platform configurations
 │       ├── alacritty/                        # Terminal emulator
@@ -31,8 +35,8 @@ Fork this, run `setup.sh`, and you have a working base to rice from.
 │   │   └── YourHostname/
 │   │       ├── configuration.nix            # NixOS system config
 │   │       └── hardware-configuration.nix   # Your hardware (gitignored — see below)
-│   └── Secrets/
-│       └── (empty — see Secrets section)
+│   └── secrets/
+│       └── (empty - see secrets section)
 │
 ├── setup.sh                                 # Run this first
 ├── .gitignore
