@@ -1,2 +1,0 @@
-This is an example of a Config File. Please place your config files like this in order to keep everythign organised, 
-- Geordie Mac (JAJM2006)
