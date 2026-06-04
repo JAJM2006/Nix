@@ -25,7 +25,7 @@ if ! command -v gum &>/dev/null; then
     echo "  'gum' not found — launching a temporary nix-shell that has it."
     echo "  This is normal on a fresh install. It may take a moment."
     echo ""
-    exec nix-shell -p gum --run "bash $0 $*"
+    exec nix-shell -p gum --run "bash $0 $@"
 fi
 
 # ==============================================================================
@@ -221,7 +221,9 @@ if [[ -f "$CONFIG_NIX" ]]; then
 import sys, re
 
 path, xkb_layout, console_keymap = sys.argv[1], sys.argv[2], sys.argv[3]
-text = open(path).read()
+
+with open(path) as f:
+    text = f.read()
 
 # Replace xkb layout (inside the services.xserver.xkb block)
 text = re.sub(r'(xkb\s*=\s*\{[^}]*layout\s*=\s*")[^"]*(")', rf'\g<1>{xkb_layout}\2', text, flags=re.DOTALL)
@@ -229,7 +231,8 @@ text = re.sub(r'(xkb\s*=\s*\{[^}]*layout\s*=\s*")[^"]*(")', rf'\g<1>{xkb_layout}
 # Replace console keyMap
 text = re.sub(r'(console\.keyMap\s*=\s*")[^"]*(")', rf'\g<1>{console_keymap}\2', text)
 
-open(path, 'w').write(text)
+with open(path, 'w') as f:
+    f.write(text)
 PYEOF
     success "xkb.layout = \"$KEYMAP\",  console.keyMap = \"$CONSOLE_KEYMAP\""
 else
@@ -255,7 +258,9 @@ if [[ -f "$CONFIG_NIX" ]]; then
 import re, sys
 
 path = sys.argv[1]
-text = open(path).read()
+
+with open(path) as f:
+    text = f.read()
 
 # Match the KDE block: from its header comment up to (not including) the next header
 kde_block_re = re.compile(
@@ -271,7 +276,8 @@ def uncomment_kde(m):
     return block
 
 text = kde_block_re.sub(uncomment_kde, text)
-open(path, 'w').write(text)
+with open(path, 'w') as f:
+    f.write(text)
 PYEOF
             success "KDE Plasma 6 enabled"
             ;;
@@ -281,7 +287,9 @@ PYEOF
 import re, sys
 
 path = sys.argv[1]
-text = open(path).read()
+
+with open(path) as f:
+    text = f.read()
 
 gnome_block_re = re.compile(
     r'([ \t]*# --- GNOME.*?)'
@@ -295,7 +303,8 @@ def uncomment_gnome(m):
     return block
 
 text = gnome_block_re.sub(uncomment_gnome, text)
-open(path, 'w').write(text)
+with open(path, 'w') as f:
+    f.write(text)
 PYEOF
             success "GNOME enabled"
             ;;
@@ -360,8 +369,12 @@ if confirm "Set up a git repository for your config?"; then
     fi
 
     git add -A
-    git commit -m "Initial config: ${USERNAME}@${HOSTNAME}"
-    success "Created initial commit"
+    if ! git diff --cached --quiet; then
+        git commit -m "Initial config: ${USERNAME}@${HOSTNAME}"
+        success "Created initial commit"
+    else
+        warn "Nothing to commit — repo already up to date"
+    fi
 
     if [[ -n "$REMOTE" && "$REMOTE" != "skip" ]]; then
         git remote add origin "$REMOTE" 2>/dev/null \
