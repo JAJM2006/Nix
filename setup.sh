@@ -178,7 +178,10 @@ FILES=(
 do_replace() {
     local file="$1" from="$2" to="$3"
     if [[ -f "$file" ]] && grep -qF "$from" "$file"; then
-        sed -i "s|${from}|${to}|g" "$file"
+        # Escape & and | so sed treats them as literals in the replacement string
+        local safe_to="${to//&/\\&}"
+        safe_to="${safe_to//|/\\|}"
+        sed -i "s|${from}|${safe_to}|g" "$file"
     fi
 }
 
