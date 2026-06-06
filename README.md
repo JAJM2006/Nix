@@ -1,3 +1,6 @@
+THIS IS A WORK IN PROGRESS!!!!!
+
+
 # Nix Configuration Template
 
 A NixOS configuration using Nix flakes and Home Manager, designed to live at `~/Settings`.
