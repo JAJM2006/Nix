@@ -1,0 +1,56 @@
+# ==============================================================================
+# CONFIG/NIXOS/[YOUR-HOSTNAME]/ALACRITTY-OVERRIDE.TOML
+# ==============================================================================
+# This is an example of a MACHINE-SPECIFIC config file.
+#
+# The idea:
+#   config/common/alacritty/   — your base Alacritty config, used on every machine
+#   config/nixos/[hostname]/   — overrides that only apply to THIS machine
+#
+# You don't have to override anything. But if one machine has a HiDPI screen
+# and needs a larger font, or a different machine looks better with a lighter
+# theme, this is where you'd put that.
+#
+# HOW TO USE THIS FILE
+# ==============================================================================
+# 1. Rename the containing folder from [placeholder] to your actual hostname
+#    (the same name you gave in setup.sh, e.g. "nixbox" or "desktop").
+#
+# 2. Add the override symlink to your home config.
+#    In home/youruser.nix, add:
+#
+#      home.file.".config/alacritty/override.toml".source =
+#        config.lib.file.mkOutOfStoreSymlink
+#          "${config.home.homeDirectory}/Settings/config/nixos/YOUR-HOSTNAME/alacritty-override.toml";
+#
+# 3. Tell the base alacritty.toml to import it.
+#    In config/common/alacritty/alacritty.toml, the [general] block already
+#    imports default.toml for the colour theme. Add your override the same way:
+#
+#      [general]
+#      import = [
+#        "~/.config/alacritty/themes/default.toml",
+#        "~/.config/alacritty/override.toml",
+#      ]
+#
+# 4. Run rebuild.
+#
+# EXAMPLE OVERRIDES BELOW — uncomment what you want
+# ==============================================================================
+
+# HiDPI / large screen — bump the font size up
+# [font]
+# size = 14.0
+
+# Small laptop screen — bring it down
+# [font]
+# size = 10.0
+
+# Different opacity on this machine
+# [window]
+# opacity = 0.85
+
+# Prefer a light theme on this machine
+# (swap default.toml for a light Alacritty theme file)
+# [general]
+# import = ["~/.config/alacritty/themes/light.toml"]

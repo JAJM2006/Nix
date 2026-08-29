@@ -3,7 +3,7 @@ THIS IS A WORK IN PROGRESS!!!!!
 
 # Nix Configuration Template
 
-A NixOS configuration using Nix flakes and Home Manager, designed to live at `~/Settings`.
+A NixOS configuration using Nix flakes and Home Managerm for Multi-User and Multi-Device setups
 
 Fork this, run `setup.sh`, and you have a working base to build from.
 
@@ -15,63 +15,125 @@ Good question. Before you run anything, it helps to understand *why* this exists
 
 Most Linux distros work like this: you install packages by running commands, edit config files scattered across your system, and hope you remember what you changed six months later when something breaks. Your system is the sum of everything you've ever done to it — and that's fragile.
 
-**NixOS works differently.** Your entire system — every package, every service, every setting — is described in a set of plain text files. When you run `rebuild`, NixOS reads those files and makes your system match them exactly. Nothing more, nothing less.
+**NixOS works differently.** Your entire system — every package, every service, every setting — is described in a set of plain text files. When you run `rebuild` (my custom command), NixOS reads those files and makes your system match them exactly. Nothing more, nothing less.
 
 This means:
 
-- **Reproducible** — your config files *are* your system. Clone them onto a new machine and you get the same setup.
+- **Reproducible** — your config files *are* your system. Clone them onto a new machine and you get the dylane setup.
 - **Rollbackable** — every rebuild creates a new "generation". If an update breaks something, you boot the previous generation and you're back.
 - **Readable** — want to know what's installed? Open `home/common.nix`. Everything is in one place, not spread across package manager history logs.
 
-The tradeoff is that NixOS has a learning curve. This template is designed to flatten that curve — you get a working system with sane defaults, and you can learn the details as you go.
+The tradeoff is that NixOS has a learning curve. This template is designed to flatten that curve — you get a working system with sane defaults, and you can learn the details as you go.[text](config/nixos/YourHostname)
 
-> **A note on terminology:** "Nix" refers to the programming language and package manager. "NixOS" is the Linux distribution built on top of it. You'll see both terms a lot.
+> **A note on terminology:** "Nix" refers to the programming language as well as the package manager. "NixOS" is the Linux distribution built on top of it. You'll see both terms a lot.
 
 ---
 
 ## 📁 How this repo is organised
 
-Once `setup.sh` runs, your config lives at `~/Settings` and looks like this:
+Once `setup.sh` runs, your config lives at `/Settings` and looks like this:
 
 ```
-~/Settings/
-├── config/
-│   └── common/                               # App configs (shared across machines)
-│   │   ├── alacritty/                        # Terminal emulator config
-│   │   ├── nvim/                             # Neovim / LazyVim config
-│   │   └── starship/                         # Shell prompt config
-│   └── YourHostname/                         # App configs (machine specific)
-│       └── alacritty-override/               # Just an example of a Machine specific config
+/Settings/
+├── flake.nix                           # Central Flake entry point (wires all hosts, users, and modules)
+├── flake.lock                          # Pinned nixpkgs and module dependency versions
+├── setup.sh                            # System provisioning, permissions (771), & workspace link script
 │
-├── home/
-│   ├── common.nix                            # Packages and programs for all machines
-│   └── youruser.nix                          # Your NixOS-specific home config
+├── modules/                            # Custom reusable option definitions (feature flags & abstractions)
+│   ├── nixos/                          # System-level NixOS modules
+│   │   ├── default.nix                 # Auto-imports all system modules in directory
+│   │   ├── desktop-environments.nix    # Shared display manager & DE setups (KDE, GNOME, Niri)
+│   │   ├── gaming.nix                  # Steam, Lutris, Gamemode, and kernel tweaks toggle
+│   │   └── parental-controls.nix       # Custom DNS, uptime restrictions, and execution rules
+│   │
+│   └── home-manager/                   # User-level Home Manager modules
+│       ├── default.nix                 # Auto-imports all user modules in directory
+│       ├── dev-tools.nix               # IDE, compiler, and CLI toolchain options
+│       └── tui-apps.nix                # Starship, Neovim, Alacritty, and shell presets
 │
-├── scripts/
-│   ├── rebuild                               # Shortcut: rebuild your NixOS system
-│   └── maintain                             # Shortcut: common maintenance tasks
+├── config/                             # Raw, uncompiled dotfiles symlinked directly by Home Manager
+│   ├── common/                         # Global configs shared across all family members
+│   │   ├── alacritty/                  # Terminal emulator base settings
+│   │   ├── nvim/                       # Neovim / LazyVim environment
+│   │   └── starship/                   # Shell prompt configuration
+│   ├── home-pc/                        # Home PC shared application configs
+│   ├── dylan-pc/                       # Dylan's Gaming PC app overrides
+│   ├── dylan-laptop/                   # Dylan's Laptop app overrides
+│   ├── josh-laptop/                    # Josh's Laptop app overrides
+│   └── jane-workstation/               # Jane's Workstation app overrides
 │
-├── system/
-│   ├── hosts/
-│   │   └── YourHostname/
-│   │       ├── configuration.nix            # System-level config (boot, networking, etc.)
-│   │       └── hardware-configuration.nix   # Your hardware — generated on install, gitignored
-│   └── secrets/
-│       └── (see Secrets section below)
+├── home/                               # User-level Home Manager profile declarations
+│   ├── common.nix                      # Base packages and default settings for every user
+│   ├── admin.nix                       # Shared administrative utility profile (Josh & Jane)
+│   ├── josh.nix                        # Josh's individual environment & app selection
+│   ├── jane.nix                        # Jane's individual environment & app selection
+│   └── dylan.nix                       # Dylan's user profile (gaming, dev tools, ricing)
 │
-├── setup.sh                                 # Run this first
-├── flake.nix                                # The entry point — wires everything together
-└── flake.lock                               # Pinned dependency versions — always commit this
+├── system/                             # System-level host machine definitions
+│   ├── common/                         # System settings applied to all devices (locales, nix settings)
+│   │   └── default.nix
+│   │
+│   ├── hosts/                          # Per-machine system configurations
+│   │   ├── home-pc/                    # Shared family desktop
+│   │   │   ├── configuration.nix       # Imports users: Josh, jane, dylan, anna
+│   │   │   └── hardware-configuration.nix
+│   │   ├── home-server/                # Central family server / NAS
+│   │   │   ├── configuration.nix       # Imports users: Josh, jane (admin only)
+│   │   │   └── hardware-configuration.nix
+│   │   ├── josh-laptop/                # Josh's primary laptop
+│   │   │   ├── configuration.nix       # Imports users: Josh
+│   │   │   └── hardware-configuration.nix
+│   │   ├── jane-workstation/           # Jane's primary workstation
+│   │   │   ├── configuration.nix       # Imports users: jane
+│   │   │   └── hardware-configuration.nix
+│   │   ├── dylan-pc/                   # Dylan's gaming desktop
+│   │   │   ├── configuration.nix       # Imports users: dylan, admin
+│   │   │   └── hardware-configuration.nix
+│   │   └── dylan-laptop/               # Dylan's portable laptop
+│   │       ├── configuration.nix       # Imports users: dylan, admin
+│   │       └── hardware-configuration.nix
+│   │
+│   └── secrets/                        # Secret management directory
+│       ├── secrets.yaml                # In-repo encrypted Age secrets managed by sops-nix
+│       └── .sops.yaml                  # Key fingerprint declarations and encryption rules
+│
+└── scripts/                            # Automated governance & maintenance utilities
+    ├── rebuild                         # Main wrapper checking main branch sync & executing nixos-rebuild
+    ├── request-change                  # Git branch creator & PR helper script for Dylan
+    ├── maintain                        # Garbage collection, store optimization, & flake update utility
+    └── dylan-tui.sh                     # Simplified dialog interface for Dylan
 ```
+**The key idea:** `config/` holds app config files that are *symlinked* into place, so you can edit them directly and see changes immediately. `home/` and `system/` hold Nix files that declare what's installed and how services are configured — these require a `rebuild` to take effect. 
 
-**The key idea:** `config/` holds app config files that are *symlinked* into place, so you can edit them directly and see changes immediately. `home/` and `system/` hold Nix files that declare what's installed and how services are configured — these require a `rebuild` to take effect.
-
----
-
-## 🖥️ Machines
-
-- **YourHostname** — NixOS desktop (x86_64-linux), renamed by `setup.sh`
-
+However, that is `/Settings`, but due to the wonders of symlinks `~/Settings` is what you will edit, and it will look like (if you are Joshua, and on Joshua's Laptop) this:
+```
+/Settings/
+├── flake.nix                           
+├── flake.lock                          
+├── setup.sh                            
+│
+├── modules/                            
+│   ├── nixos/                          
+│   └── home-manager/                   
+│
+├── config/                             
+│   ├── common/                         
+│   └── josh-laptop/                    
+│
+├── home/                               
+│   ├── common.nix                      
+│   ├── admin.nix                       
+│   └── josh.nix                        
+│
+├── system/                             
+│   ├── common/                         
+│   ├── hosts/                          
+│   │   └── josh-laptop/                
+│   └── secrets/                        
+│
+└── scripts/                            
+```
+Which we can all agree is so much easier to understand. `/Settings` is the whole directory, while `~/Settings` is the focused directory for each user on each device.
 ---
 
 ## 🚀 Quick Start
@@ -79,13 +141,13 @@ Once `setup.sh` runs, your config lives at `~/Settings` and looks like this:
 ### 1. Clone the repo
 
 ```bash
-nix-shell -p git --run "git clone https://github.com/JAJM2006/Nix-Template ~/Settings"
+nix-shell -p git --run "git clone https://github.com/JAJM2006/Nix /Settings"
 ```
 
 ### 2. Run setup
 
 ```bash
-cd ~/Settings
+cd /Settings
 bash setup.sh
 ```
 
